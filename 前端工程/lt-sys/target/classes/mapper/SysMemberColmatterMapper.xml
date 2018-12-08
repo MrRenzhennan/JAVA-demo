@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.smzj.mapper.SysMemberColmatterMapper" >
+  <resultMap id="BaseResultMap" type="com.smzj.model.SysMemberColmatter" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <result column="MEMBERID" property="memberid" jdbcType="VARCHAR" />
+    <result column="MATTERID" property="matterid" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectByMemberid" resultMap="BaseResultMap">
+  	  select * from SYS_MEMBER_COLMATTER where memberid=#{memberid} and matterid=#{matterid}
+  </select>
+  <insert id="saveSMC">
+  		insert into SYS_MEMBER_COLMATTER(memberid,matterid) values(#{memberid},#{matterid})
+  </insert>
+</mapper>

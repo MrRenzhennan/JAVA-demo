@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smzj.mapper.WorkOrgMapper">
+  <resultMap id="WorkOrgMap" type="com.smzj.model.WorkOrg">
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="ORGID" jdbcType="VARCHAR" property="orgid" />
+    <result column="ORGNAME" jdbcType="VARCHAR" property="orgname" />
+    <result column="ORGURL" jdbcType="VARCHAR" property="orgurl" />
+    <result column="ORGADDRESS" jdbcType="VARCHAR" property="orgaddress" />
+    <result column="ORGTEL" jdbcType="VARCHAR" property="orgtel" />
+    <result column="ORGEMAIL" jdbcType="VARCHAR" property="orgemail" />
+    <result column="ORGSCORE" jdbcType="DECIMAL" property="orgscore" />
+    <result column="ISDISABLE" jdbcType="DECIMAL" property="isdisable" />
+    <result column="ISDEL" jdbcType="DECIMAL" property="isdel" />
+    <result column="ORGSCORENUM" jdbcType="DECIMAL" property="orgscorenum" />
+    <result column="SORTCODE" jdbcType="DECIMAL" property="sortcode" />
+    <result column="ORGCODE" jdbcType="VARCHAR" property="orgcode" />
+    <result column="IMGURL" jdbcType="VARCHAR" property="imgurl" />
+    <result column="ORGINFO" jdbcType="CLOB" property="orginfo" />
+  </resultMap>
+  <select id="selectAll" resultMap="WorkOrgMap">
+  	select * from work_org
+  </select>
+  <select id="selectAllByIsWork" resultMap="WorkOrgMap">
+  	select * from work_org where iswork=1
+  </select>
+</mapper>

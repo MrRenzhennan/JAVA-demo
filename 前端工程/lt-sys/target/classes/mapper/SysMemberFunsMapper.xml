@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.smzj.mapper.SysMemberFunsMapper" >
+  <resultMap id="SYSMEMBERFUNS" type="com.smzj.model.SysMemberFuns" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <result column="MEMBERID" property="memberid" jdbcType="VARCHAR" />
+    <result column="FUNCODE" property="funcode" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="findBySysMemberFunsId" resultMap="SYSMEMBERFUNS">
+    select * from SYS_MEMBERFUNS where MEMBERID = #{memberid}
+  </select>
+</mapper>

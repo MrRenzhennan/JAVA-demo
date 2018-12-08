@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.smzj.mapper.SysMemberTruenameMapper" >
+  <resultMap id="BaseResultMap" type="com.smzj.model.SysMemberTruename" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="TRUENAME" property="truename" jdbcType="VARCHAR" />
+    <result column="IDCARD" property="idcard" jdbcType="VARCHAR" />
+    <result column="FRONTCARD" property="frontcard" jdbcType="VARCHAR" />
+    <result column="BEHINDCARD" property="behindcard" jdbcType="VARCHAR" />
+    <result column="PEOPLECARD" property="peoplecard" jdbcType="VARCHAR" />
+    <result column="MEMBERID" property="memberid" jdbcType="VARCHAR" />
+    <result column="ADDTIME" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="STATUS" property="status" jdbcType="DECIMAL"/>
+    <result column="NOTBYREASON" property="notbyreason" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <insert id="insertTruename" parameterType="com.smzj.model.SysMemberTruename">
+  	insert into sys_member_truename
+  	(
+  		id,
+  		truename,
+  		idcard,
+  		frontcard,
+  		behindcard,
+  		peoplecard,
+  		memberid,
+  		addtime,
+  		status
+  	)
+  	values
+  	(
+  		sys_guid(),
+  		#{truename,jdbcType=VARCHAR},
+  		#{idcard,jdbcType=VARCHAR},
+  		#{frontcard,jdbcType=VARCHAR},
+  		#{behindcard,jdbcType=VARCHAR},
+  		#{peoplecard,jdbcType=VARCHAR},
+  		#{memberid,jdbcType=VARCHAR},
+  		#{addtime,jdbcType=TIMESTAMP},
+  		#{status,jdbcType=DECIMAL}
+  	)
+  </insert>
+
+  <update id="updateByMember" parameterType="com.smzj.model.SysMemberTruename">
+  	update sys_member_truename
+  	set
+  	truename=#{truename,jdbcType=VARCHAR},
+  	idcard=#{idcard,jdbcType=VARCHAR},
+	frontcard=#{frontcard,jdbcType=VARCHAR},
+	behindcard=#{behindcard,jdbcType=VARCHAR},
+	peoplecard=#{peoplecard,jdbcType=VARCHAR},
+	addtime=#{addtime,jdbcType=TIMESTAMP},
+	status=#{status,jdbcType=DECIMAL}
+	where memberid=#{memberid}
+  </update>
+
+  <insert id="insertTruename1" parameterType="com.smzj.model.SysMemberTruename">
+  	insert into sys_member_truename
+  	(
+  		id,
+  		truename,
+  		idcard,
+  		memberid,
+  		addtime,
+  		status
+  	)
+  	values
+  	(
+  		sys_guid(),
+  		#{truename,jdbcType=VARCHAR},
+  		#{idcard,jdbcType=VARCHAR},
+  		#{memberid,jdbcType=VARCHAR},
+  		#{addtime,jdbcType=TIMESTAMP},
+  		#{status,jdbcType=DECIMAL}
+  	)
+  </insert>
+
+  <update id="updateByMember1" parameterType="com.smzj.model.SysMemberTruename">
+  	update sys_member_truename
+  	set
+  	truename=#{truename,jdbcType=VARCHAR},
+  	idcard=#{idcard,jdbcType=VARCHAR},
+	frontcard=#{frontcard,jdbcType=VARCHAR},
+	behindcard=#{behindcard,jdbcType=VARCHAR},
+	peoplecard=#{peoplecard,jdbcType=VARCHAR},
+	addtime=#{addtime,jdbcType=TIMESTAMP},
+	status=#{status,jdbcType=DECIMAL}
+	where memberid=#{memberid}
+  </update>
+
+  <select id="selectByMember" resultMap="BaseResultMap">
+  	select * from sys_member_truename
+  	where memberid=#{memberid}
+  </select>
+
+  <select id="selectOverByIdcard" resultType="int">
+  	select count(-1) as count
+	from sys_member_rank mr
+	join sys_member_truename t on mr.memberid=t.memberid and mr.rankid='MemTrueName'
+	and t.idcard=#{idcard}
+  </select>
+
+</mapper>

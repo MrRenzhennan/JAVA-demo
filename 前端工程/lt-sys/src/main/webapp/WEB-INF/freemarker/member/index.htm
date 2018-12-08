@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "../common/member/head.htm">
+<#include "../common/member/headfile.htm">
+<style type="text/css">
+	 .step {text-align:center;}
+	 .stepbg {font-size: 14px; height: 34px; color: #fff; line-height: 34px;}
+	 .step .step-last .step-no {background-position: 50% -136px; }
+	 .step .step-first .step-done .step-no{ background-position: 50% -204px; }
+	 .step .step-no { background:url(${RootPath}static/img/member/online/matter/step.png) no-repeat 50% -102px; }
+	 .step .step-now { background: url(${RootPath}static/img/member/online/matter/step.png) no-repeat 50% -170px; }
+	 .step .step-over { background:url(${RootPath}static/img/member/online/matter/step.png) no-repeat 50% 0px; }
+	 .step .step-start { background:url(${RootPath}static/img/member/online/matter/step.png) no-repeat 50% -34px; }
+	 .step .step-end { background:url(${RootPath}static/img/member/online/matter/step.png) no-repeat 50% -68px; }
+	 .step .step-no-last { background: url(${RootPath}static/img/member/online/matter/step.png) no-repeat 50% -346px;}
+	 .step .step-middle { background: url(${RootPath}static/img/member/online/matter/step.png) no-repeat 50% -414px;}
+	 .step .step-middle-no { background: url(${RootPath}static/img/member/online/matter/step.png) no-repeat 50% -380px;}
+	 .step ol{ overflow: hidden; zoom: 1;  margin-left: -30px; list-style: none; }
+	 .step ol li{ float: left; text-align: center;width:130px; }
+	 .step .step-name {color: #666; font-size: 14px;}
+	 .step .step-name-no {color: #000; font-size: 14px;}
+	 .step .step-gray {color: gray; font-size: 14px;}
+	 .step .step-time { color: #999;font-size:12px;}
+</style>
+</head>
+<body>
+<#include "../common/member/headinfo.htm">
+<div class="cm-wrapper">
+	<div class="cm-center">
+		<div class="cm-sitemap">
+			<div class="fl navinfo">
+				<span>您现在的位置：</span>
+				<span><a href="${MainSite!}">首页</a></span>
+				<span>&nbsp;&gt;&nbsp;</span>
+				<span><a href="${MemberSite!}auth/index.html">用户中心</a></span>
+				<span>&nbsp;&gt;&nbsp;</span>
+				<span>我的办事项</span>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+</div>
+<div class="cm-center">
+<div class="cm-pagebody">
+	<div class="fl leftbody">
+		<div class="titlediv">
+			<div class="fl tname">我的用户中心</div>
+			<div class="clear"></div>
+		</div>
+		<div class="menusdiv">
+			<div class="menus padding">${MenuHtml!}</div>
+		</div>
+	</div>
+	<div class="fr rightbody">
+		<div class="titlediv"><div class="tname">欢迎您登录到用户中心！</div></div>
+		<div class="bodydiv" style="background:url(${RootPath}static/img/indexbg.jpg) top left no-repeat;">
+			<div style="height: 436px;">这是 用户中心</div>
+		</div>
+	</div>
+	<div class="clear"></div>
+</div>
+</div>
+<#include "../common/member/bottom.htm">
+</body>
+</html>

@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.smzj.mapper.SysOrgMapper" >
+  <resultMap id="BaseResultMap" type="com.smzj.model.SysOrg" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="ORGTYPE" property="orgtype" jdbcType="DECIMAL" />
+    <id column="ORGCODE" property="orgcode" jdbcType="VARCHAR" />
+    <result column="PARENTCODE" property="parentcode" jdbcType="VARCHAR" />
+    <result column="ORGNAME" property="orgname" jdbcType="VARCHAR" />
+    <result column="ORGMEMO" property="orgmemo" jdbcType="VARCHAR" />
+    <result column="ADMINID" property="adminid" jdbcType="DECIMAL" />
+    <result column="ISALONE" property="isalone" jdbcType="DECIMAL" />
+    <result column="SORTCODE" property="sortcode" jdbcType="DECIMAL" />
+    <result column="ISDEL" property="isdel" jdbcType="DECIMAL" />
+    <result column="ADDTIME" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="ISTEL" property="istel" jdbcType="TIMESTAMP" />
+    <result column="ISEMAIL" property="isemail" jdbcType="TIMESTAMP" />
+    <result column="ISLINK" property="islink" jdbcType="TIMESTAMP" />
+    <result column="TYPEID" property="typeid" jdbcType="VARCHAR" />
+    <result column="TYPENAME" property="typename" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="BaseResultMapP" type="com.smzj.model.SysOrg" extends="BaseResultMap">
+  	<result column="PARENTNAME" property="parentname" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="sysOrg_column">
+      ORGTYPE,ORGCODE,PARENTCODE,ORGNAME,ORGMEMO,ADMINID,ISALONE ,SORTCODE ,ISDEL,ADDTIME, ISTEL, ISEMAIL, ISLINK,TYPEID,TYPENAME
+   </sql>
+   <sql id="sysOrg_properties">
+   	   #{orgtype, jdbcType=DECIMAL},
+	   #{orgcode, jdbcType=VARCHAR},
+	   #{parentcode,jdbcType=VARCHAR },
+	   #{orgname, jdbcType=VARCHAR},
+	   #{orgmemo, jdbcType=VARCHAR},
+	   #{adminid, jdbcType=VARCHAR},
+	   #{isalone, jdbcType=DECIMAL},
+	   #{sortcode, jdbcType=DECIMAL},
+	   #{isdel, jdbcType=DECIMAL},
+	   #{addtime, jdbcType=TIMESTAMP},
+	   #{istel, jdbcType=DECIMAL},
+	   #{isemail, jdbcType=DECIMAL},
+	   #{islink, jdbcType=DECIMAL},
+	   #{typeid, jdbcType=VARCHAR},
+	   #{typename, jdbcType=VARCHAR}
+   </sql>
+  <select id="selectByTypeOrCode" resultMap="BaseResultMap">
+    select * from SYS_ORG
+    <where>
+    <if test="orgtype != null and orgtype != ''">
+        and ORGTYPE = #{orgtype}
+    </if>
+    <if test="parentcode != null and parentcode != ''">
+           and PARENTCODE = #{parentcode}
+    </if>
+    <if test="orgcode != null and orgcode != ''">
+           and ORGCODE = #{orgcode}
+    </if>
+            and isDel=0
+    </where>
+  </select>
+  <select id="findChildOrgsByTypeAndParentCode" parameterType="com.smzj.model.SysOrg" resultMap="BaseResultMap">
+    select * from SYS_ORG where ORGTYPE = #{orgtype} and PARENTCODE = #{orgcode} order by sortcode asc
+  </select>
+  <select id="selectByTypeOrPrdId" resultMap="BaseResultMap">
+    select * from SYS_ORG where ORGTYPE = #{orgtype} and PARENTCODE = #{parentcode} and isDel=0 order by sortcode asc
+  </select>
+  <update id="updateSysOrgIsDel">
+    update SYS_ORG set ISDEL = #{isdel} where ORGCODE = #{orgcode}
+  </update>
+  <delete id="deleteByOrgCode">
+    delete SYS_ORG where ORGCODE = #{orgcode}
+  </delete>
+	<insert id="insertSysOrg" parameterType="com.smzj.model.SysOrg">
+	    <selectKey keyProperty="orgcode" resultType="String" order="BEFORE">
+	       <![CDATA[ select sys_guid() from dual]]>
+	    </selectKey>
+
+	    insert into SYS_ORG (<include refid="sysOrg_column"/>)values (<include refid="sysOrg_properties" />)
+
+	</insert>
+	<select id="findSysOrgByID" resultMap="BaseResultMap" >
+    	select * from SYS_ORG where ORGTYPE = #{orgtype} and ORGCODE =#{orgcode}
+  	</select>
+	<select id="selectByOrgCode" resultMap="BaseResultMap" >
+    	SELECT *
+		  FROM SYS_ORG
+		 WHERE ORGCODE =#{orgcode}
+  	</select>
+  	<select id="selectSysOrgByParentCode" resultMap="BaseResultMap" >
+    	SELECT *
+		  FROM SYS_ORG
+		 WHERE parentcode =#{orgcode, jdbcType=VARCHAR}
+		 and isdel = 0
+		 order by sortcode 
+  	</select>
+
+  	<select id="selectInteractionOrg4Page" resultMap="BaseResultMap" >
+    	SELECT <include refid="sysOrg_column"/>
+	  FROM SYS_ORG
+	 WHERE ORGTYPE = #{orgtype,jdbcType=VARCHAR}
+	 <if test="key != null and key != ''">
+	 	and orgname like '%'|| #{key,jdbcType=VARCHAR} ||'%'
+	 </if>
+	 <if test="area != null and area != ''">
+	 	<if test="area == 'istel'">
+	 		and istel = 1
+	 	</if>
+	 	<if test="area == 'isemail'">
+	 		and isemail = 1
+	 	</if>
+	 	<if test="area == 'islink'">
+	 		and islink = 1
+	 	</if>
+	 	<if test="area == 'ismsg'">
+	 		and ismsg = 1
+	 	</if>
+	 </if>
+	 AND PARENTCODE = #{orgcode,jdbcType=VARCHAR}
+  	</select>
+  	
+  	<select id="selectInteractionOrg5Page" resultMap="BaseResultMap" >
+    	SELECT <include refid="sysOrg_column"/>
+	  FROM SYS_ORG
+	 WHERE ORGTYPE = #{orgtype,jdbcType=VARCHAR} AND ISDEL = 0
+	 <if test="key != null and key != ''">
+	 	and orgname like '%'|| #{key,jdbcType=VARCHAR} ||'%'
+	 </if>
+	 <if test="area != null and area != ''">
+	 	<if test="area == 'istel'">
+	 		and istel = 1
+	 	</if>
+	 	<if test="area == 'isemail'">
+	 		and isemail = 1
+	 	</if>
+	 	<if test="area == 'islink'">
+	 		and islink = 1
+	 	</if>
+	 	<if test="area == 'ismsg'">
+	 		and ismsg = 1
+	 	</if>
+	 </if>
+	 START WITH PARENTCODE = #{orgcode,jdbcType=VARCHAR}
+	CONNECT BY PARENTCODE = PRIOR ORGCODE
+	union all
+SELECT ORGTYPE,
+       ORGCODE,
+       PARENTCODE,
+       ORGNAME,
+       ORGMEMO,
+       ADMINID,
+       ISALONE,
+       SORTCODE,
+       ISDEL,
+       ADDTIME,
+       ISTEL,
+       ISEMAIL,
+       ISLINK,
+       TYPEID,
+       TYPENAME
+  FROM SYS_ORG
+ WHERE ORGTYPE = #{orgtype,jdbcType=VARCHAR} and ORGCODE = #{orgcode,jdbcType=VARCHAR}
+  AND ISDEL = 0
+	 ORDER BY SORTCODE ASC
+  	</select>
+  	
+  	<select id="selectOrg4Page" parameterType="Map" resultMap="BaseResultMapP">
+  		SELECT SO1.ORGNAME PARENTNAME, SO.*
+		  FROM SYS_ORG SO
+		  LEFT JOIN SYS_ORG SO1
+		    ON SO.PARENTCODE = SO1.ORGCODE
+		<where>
+			<if test="orgtype != null and orgtype != ''">
+				AND SO.ORGTYPE = #{orgtype, jdbcType=VARCHAR}
+			</if>
+			<choose>
+				<when test="key != null and key != ''">
+					AND SO.ORGNAME LIKE '%'|| #{key, jdbcType=VARCHAR} || '%'
+				</when>
+				<otherwise>
+					<if test="orgcode != null and orgcode != ''">
+						AND SO.PARENTCODE = #{orgcode, jdbcType=VARCHAR}
+					</if>
+				</otherwise>
+			</choose>
+			<if test="area != null and area != ''">
+				<choose>
+					<when test="area == 'istel'">
+						AND SO.ISTEL = 1
+					</when>
+					<when test="area == 'isemail'">
+						AND SO.ISEMAIL = 1
+					</when>
+					<when test="area == 'islink'">
+						AND SO.ISLINK = 1
+					</when>
+					<when test="area == 'ismsg'">
+						AND SO.ISMSG = 1
+					</when>
+				</choose>
+			</if>
+		</where>
+		ORDER BY SO.SORTCODE ASC
+  	</select>
+</mapper>

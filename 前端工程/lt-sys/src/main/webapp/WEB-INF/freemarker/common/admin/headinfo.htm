@@ -1,0 +1,322 @@
+<div class="cm-header">
+<div class="cm-center">
+<div class="fl logos">
+<div class="logo"></div>
+</div>
+<div class="fl lines"><div class="line"></div></div>
+<div class="fl piclogo"><img src="${RootPath!}static/img/common/syslogo.jpg" border="0"/></div>
+<div class="fr menuinfo">
+<div class="topmenus">
+<span class="menu"><a href="${SysSite!}">我的管理中心</a></span>
+</div>
+<div class="topinfos">
+<span class="menu">欢迎您，
+<#if sysUser??>
+		<#if (sysUser.truename)??>
+			${(sysUser.truename)!}(${(sysUser.username)!})
+		<#else>
+			${(sysUser.username)!}
+		</#if>
+</#if>
+</span>
+<span class="mline">|</span>
+<span class="menu"><a href="${SysSite!}information.html">个人信息</a></span>
+<span class="mline">|</span>
+<span class="menu"><a href="${SysSite!}logout.html">退出登录</a></span>
+</div>
+</div>
+<div class="clear"></div>
+</div>
+</div>
+<div class='cm-menus'>
+	<div class='cm-center'>
+		<div class='menus'>
+			<#if loginUserInfo??>
+				<#if ((loginUserInfo.permitStr))??>
+					<#if ((loginUserInfo.permitStr)?index_of('Index|') > -1)>
+						<div class="fl menu
+							<#if basePage??>
+								<#if (basePage.appCode)?? && (basePage.appCode) == 'Index'>
+									on
+								</#if>
+							</#if>
+						">
+							<div class='mtext'><a href='${SysSite!}index.html'>我的管理首页</a></div>
+						</div>
+					</#if>
+				</#if>
+			</#if>
+			<#if loginUserInfo??>
+				<#if ((loginUserInfo.permitStr))??>
+					<#if ((loginUserInfo.permitStr)?index_of('Info|') > -1)>
+						<div class="fl menu
+						<#if basePage??>
+							<#if (basePage.appCode)?? && (basePage.appCode) == 'Info'>
+								on
+							</#if>
+						</#if>
+						">
+							<div class='mtext'><a href='${InfoSite!}admin.html'>信息管理</a></div>
+						</div>
+					</#if>
+				</#if>
+			</#if>
+			<#if loginUserInfo??>
+				<#if ((loginUserInfo.permitStr))??>
+					<#if ((loginUserInfo.permitStr)?index_of('Subject|') > -1)>
+						<div class="fl menu
+							<#if basePage??>
+								<#if (basePage.appCode)?? && (basePage.appCode) == 'Subject'>
+									on
+								</#if>
+							</#if>
+						">
+							<div class='mtext'><a href='${SubjectSite!}admin.html'>应用管理</a></div>
+						</div>
+					</#if>
+				</#if>
+			</#if>
+			<#if loginUserInfo??>
+				<#if ((loginUserInfo.permitStr))??>
+					<#if ((loginUserInfo.permitStr)?index_of('Finance|') > -1)>
+						<div class="fl menu
+							<#if basePage??>
+								<#if (basePage.appCode)?? && (basePage.appCode) == 'Finance'>
+									on
+								</#if>
+							</#if>
+						">
+							<div class='mtext'><a href='${FinanceSite!}admin.html'>普惠金融</a></div>
+						</div>
+					</#if>
+				</#if>
+			</#if>
+			<#if loginUserInfo??>
+				<#if ((loginUserInfo.permitStr))??>
+					<#if ((loginUserInfo.permitStr)?index_of('KQ|') > -1)>
+						<div class="fl menu
+							<#if basePage??>
+								<#if (basePage.appCode)?? && (basePage.appCode) == 'KQ'>
+									on
+								</#if>
+							</#if>
+						">
+							<div class='mtext'><a href='${OaSite!}kq/index.html'>办公系统</a></div>
+						</div>
+					</#if>
+				</#if>
+			</#if>
+			<#if loginUserInfo??>
+				<#if ((loginUserInfo.permitStr))??>
+					<#if ((loginUserInfo.permitStr)?index_of('OnLine|') > -1)>
+						<div class="fl menu
+							<#if basePage??>
+								<#if (basePage.appCode)?? && (basePage.appCode) == 'OnLine'>
+									on
+								</#if>
+							</#if>
+						">
+							<div class='mtext'><a href='${OaSite!}online/admin.html'>网上办事</a></div>
+						</div>
+					</#if>
+				</#if>
+			</#if>
+			<#if loginUserInfo??>
+				<#if ((loginUserInfo.permitStr))??>
+					<#if ((loginUserInfo.permitStr)?index_of('Work|') > -1)>
+						<div class="fl menu
+							<#if basePage??>
+								<#if (basePage.appCode)?? && (basePage.appCode) == 'Work'>
+									on
+								</#if>
+							</#if>
+						">
+							<div class='mtext'><a href='${WorkSite!}admin.html'>基础数据</a></div>
+						</div>
+					</#if>
+				</#if>
+			</#if>
+			<#if loginUserInfo??>
+				<#if ((loginUserInfo.permitStr))??>
+					<#if ((loginUserInfo.permitStr)?index_of('Input|') > -1)>
+						<div class="fl menu
+							<#if basePage??>
+								<#if (basePage.appCode)?? && (basePage.appCode) == 'Input'>
+									on
+								</#if>
+							</#if>
+						">
+							<div class='mtext'><a href='${OaSite!}input/admin.html'>政务在线</a></div>
+						</div>
+					</#if>
+				</#if>
+			</#if>
+			<#if loginUserInfo??>
+				<#if ((loginUserInfo.permitStr))??>
+					<#if ((loginUserInfo.permitStr)?index_of('Sys|') > -1)>
+						<div class="fl menu
+							<#if basePage??>
+								<#if (basePage.appCode)?? && (basePage.appCode) == 'Sys'>
+									on
+								</#if>
+							</#if>
+						">
+							<div class='mtext'><a href='${SysSite!}admin.html'>系统管理</a></div>
+						</div>
+					</#if>
+				</#if>
+			</#if>
+			<#if loginUserInfo??>
+				<#if ((loginUserInfo.permitStr))??>
+					<#if ((loginUserInfo.permitStr)?index_of('Other|') > -1)>
+						<div class="fl menu
+							<#if basePage??>
+								<#if (basePage.appCode)?? && (basePage.appCode) == 'Other'>
+									on
+								</#if>
+							</#if>
+						">
+							<div class='mtext'><a href='${OaSite!}interview/admin/admin.html'>其他应用</a></div>
+						</div>
+					</#if>
+				</#if>
+			</#if>
+			<#if loginUserInfo??>
+				<#if ((loginUserInfo.permitStr))??>
+					<#if ((loginUserInfo.permitStr)?index_of('CommTel|') > -1)>
+						<div class="fl menu
+							<#if basePage??>
+								<#if (basePage.appCode)?? && (basePage.appCode) == 'CommTel'>
+									on
+								</#if>
+							</#if>
+						">
+							<div class='mtext'><a href='${OaSite!}comm/admin/smzj/tel/admin.html'>市长热线</a></div>
+						</div>
+					</#if>
+				</#if>
+			</#if>
+			<#if loginUserInfo??>
+				<#if ((loginUserInfo.permitStr))??>
+					<#if ((loginUserInfo.permitStr)?index_of('CommEmail|') > -1)>
+						<div class="fl menu
+							<#if basePage??>
+								<#if (basePage.appCode)?? && (basePage.appCode) == 'CommEmail'>
+									on
+								</#if>
+							</#if>
+						">
+							<div class='mtext'><a href='${OaSite!}comm/admin/smzj/email/admin.html'>市长信箱</a></div>
+						</div>
+					</#if>
+				</#if>
+			</#if>
+			<#if loginUserInfo??>
+				<#if ((loginUserInfo.permitStr))??>
+					<#if ((loginUserInfo.permitStr)?index_of('CommBBS|') > -1)>
+						<div class="fl menu
+							<#if basePage??>
+								<#if (basePage.appCode)?? && (basePage.appCode) == 'CommBBS'>
+									on
+								</#if>
+							</#if>
+						">
+							<div class='mtext'><a href='${OaSite!}comm/admin/smzj/bbs/admin.html'>连线政府</a></div>
+						</div>
+					</#if>
+				</#if>
+			</#if>
+			<#if loginUserInfo??>
+				<#if ((loginUserInfo.permitStr))??>
+					<#if ((loginUserInfo.permitStr)?index_of('CommPeople|') > -1)>
+						<div class="fl menu
+							<#if basePage??>
+								<#if (basePage.appCode)?? && (basePage.appCode) == 'CommPeople'>
+									on
+								</#if>
+							</#if>
+						">
+							<div class='mtext'><a href='${OaSite!}comm/admin/smzj/bbs/admin1.html'>人民网留言</a></div>
+						</div>
+					</#if>
+				</#if>
+			</#if>
+			<#if loginUserInfo??>
+				<#if ((loginUserInfo.permitStr))??>
+					<#if ((loginUserInfo.permitStr)?index_of('CommGov|') > -1)>
+						<div class="fl menu
+							<#if basePage??>
+								<#if (basePage.appCode)?? && (basePage.appCode) == 'CommGov'>
+									on
+								</#if>
+							</#if>
+						">
+							<div class='mtext'><a href='${OaSite!}comm/admin/gov/admin.html'>政民互动</a></div>
+						</div>
+					</#if>
+				</#if>
+			</#if>
+			<#if loginUserInfo??>
+				<#if ((loginUserInfo.permitStr))??>
+					<#if ((loginUserInfo.permitStr)?index_of('CommGov0|') > -1)>
+						<div class="fl menu
+							<#if basePage??>
+								<#if (basePage.appCode)?? && (basePage.appCode) == 'CommGov0'>
+									on
+								</#if>
+							</#if>
+						">
+							<div class='mtext'><a href='${OaSite!}comm/admin/gov/admin.html?source=0'>连线政府</a></div>
+						</div>
+					</#if>
+				</#if>
+			</#if>
+			<#if loginUserInfo??>
+				<#if ((loginUserInfo.permitStr))??>
+					<#if ((loginUserInfo.permitStr)?index_of('CommGov1|') > -1)>
+						<div class="fl menu
+							<#if basePage??>
+								<#if (basePage.appCode)?? && (basePage.appCode) == 'CommGov1'>
+									on
+								</#if>
+							</#if>
+						">
+							<div class='mtext'><a href='${OaSite!}comm/admin/gov/admin.html?source=1'>市长热线</a></div>
+						</div>
+					</#if>
+				</#if>
+			</#if>
+			<#if loginUserInfo??>
+				<#if ((loginUserInfo.permitStr))??>
+					<#if ((loginUserInfo.permitStr)?index_of('CommGov2|') > -1)>
+						<div class="fl menu
+							<#if basePage??>
+								<#if (basePage.appCode)?? && (basePage.appCode) == 'CommGov2'>
+									on
+								</#if>
+							</#if>
+						">
+							<div class='mtext'><a href='${OaSite!}comm/admin/gov/admin.html?source=2'>市长信箱</a></div>
+						</div>
+					</#if>
+				</#if>
+			</#if>
+			<#if loginUserInfo??>
+				<#if ((loginUserInfo.permitStr))??>
+					<#if ((loginUserInfo.permitStr)?index_of('CommGov3|') > -1)>
+						<div class="fl menu
+							<#if basePage??>
+								<#if (basePage.appCode)?? && (basePage.appCode) == 'CommGov3'>
+									on
+								</#if>
+							</#if>
+						">
+							<div class='mtext'><a href='${OaSite!}comm/admin/gov/admin.html?source=3'>人民网留言</a></div>
+						</div>
+					</#if>
+				</#if>
+			</#if>
+			<div class='clear'></div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,149 @@
+<html>
+<head>
+<#include "/common/admin/head.htm">
+<#include "/common/admin/headfile.htm">
+
+<script language="javascript" type="text/javascript">
+	function subForm(){
+		var isOk=JsCore.Valitor.ChkForm('subform', 1);
+		if(isOk){
+			$.ajax({
+				url : '${RootPath}system/resetPassword.html',
+				type : "post",
+				data : $("#subform").serialize(),
+				dataType: 'json',
+				async: false,
+				success : function(d) {
+					if(d.code=="-1"){
+						var layer = RootElement.JsCore.FrameLayer('Infomation');
+						layer.TipMode = true;
+						layer.TipFlag ="-1";
+						layer.TipTitle ='';
+						layer.TipText = d.msg;
+						layer.CloseFun = function (){};
+						layer.open();
+						layer = null;
+					}else if(d.code=="1"){
+						var layer = RootElement.JsCore.FrameLayer('Infomation');
+						layer.TipMode = true;
+						layer.TipFlag = d.code;
+						layer.TipTitle = d.title;
+						layer.TipText = d.msg;
+						layer.CloseFun = function (){RootElement.location.href=d.url};
+						layer.open();
+						layer = null;
+					}else{
+						var layer = RootElement.JsCore.FrameLayer('Infomation');
+						layer.TipMode = true;
+						layer.TipFlag ="1";
+						layer.TipTitle ='';
+						layer.TipText = d.msg;
+						layer.CloseFun = function (){};
+						layer.open();
+						layer = null;
+					}
+				},
+				error: function(d) {
+					RootElement.errorMessage(d);
+				}
+			});
+		  }
+	}
+</script>
+</head>
+<body>
+<#include "/common/admin/headinfo.htm">
+<div class="cm-fullpage">
+<div class="cm-center">
+<div class="cm-sitemap">
+	<div class="fl navinfo">
+		<span>您现在的位置：</span>
+		<span><a href="${MainSite}">我的管理首页</a></span>
+		<span>&nbsp;&gt;&nbsp;</span>
+		<span><a href="${SysSite}admin.html">系统管理平台</a></span>
+		<span>&nbsp;&gt;&nbsp;</span>
+		<span><a href="${SysSite}system/user.html">操作员管理</a></span>
+		<span>&nbsp;&gt;&nbsp;</span>
+		<span>重置密码</span>
+	</div>
+	<div class="clear"></div>
+</div>
+<div class="cm-center">
+<div class="cm-pagebody">
+	<div class="fl leftbody">
+		<div class="titlediv"><div class="tname">系统管理平台</div></div>
+		<div class="menusdiv">
+			<div class="menus padding">${MenuHtml}</div>
+		</div>
+	</div>
+	<div class="fr rightbody">
+		<div class="titlediv"><div class="tname">操作员管理</div></div>
+		<div class="bodydiv">
+			<div class="padding">
+				<div class="bigtitle">重置密码：</div>
+				<div class="dotline1"></div>
+				<form id="subform" class="pageform" action="/system/resetPassword.html" method="post" target="HiddenFrame">
+				<input type="hidden" id="subflag" name="subflag" value="${subflag?default('')}"/>
+				<input type="hidden" id="orgtype" name="orgtype" value="${orgtype?default('')}"/>
+                <input type="hidden" id="flag" name="flag" value="${flag?default('')}"/>
+				<div id="UserNameRow">
+					<div class="textbox">
+						<div class="fl ftitle">登录账号：</div>
+						<div class="fl control">
+							<input type="text" id="UserId" name="UserId" title="用户ID" required="true" datatype="Char" datatitle="登录账号" class="rinput" readonly style="display:none;" value="${Suer.userid?default('')}"/>
+							<input type="text" id="UserName" name="UserName" title="登录账号" class="rinput" readonly style="width:200px;text-align:left;" maxlength="128" value="${Suer.username?default('')}"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+				<div id="TrueNameRow">
+					<div class="textbox">
+						<div class="fl ftitle">真实姓名：</div>
+						<div class="fl control">
+							<input type="text" id="TrueName" name="TrueName" title="真实姓名" class="rinput" readonly style="width:100px;text-align:left;" maxlength="128" value="${Suer.truename}"/>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+				<div id="UserPasswordRow">
+					<div class="textbox">
+						<div class="fl ftitle">登录密码：</div>
+						<div class="fl control">
+							<input type="password" id="UserPassword" name="UserPassword" title="登录密码" required="true" datatitle="登录密码" datatype="Password" class="finput" style="width:180px;text-align:left;" maxlength="128" value=""/>
+						</div>
+						<div class="fl isempty">[<span>*</span>]</div>
+						<div class="fl comment">密码长度为6-16个字符</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+				<div id="SecPasswordRow">
+					<div class="textbox">
+						<div class="fl ftitle">重复密码：</div>
+						<div class="fl control">
+							<input type="password" id="SecPassword" name="SecPassword" title="重复密码" required="true" datatitle="登录密码" datatype="Repeat" to="UserPassword" class="finput" style="width:180px;text-align:left;" maxlength="128" value=""/>
+						</div>
+						<div class="fl isempty">[<span>*</span>]</div>
+						<div class="fl comment">再次输入登录密码</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+
+				<div class="buttons">
+					<input type="button" class="formbtn" onclick="javascript:return subForm();" value="确定" />
+				</div>
+				<div class="msgrow">
+					<div id="error" class="redcomment"></div>
+				</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="clear"></div>
+</div>
+</div>
+</div>
+</div>
+<#include "/common/admin/bottom.htm">
+</body>
+</html>
+

@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.smzj.mapper.SysMemberTempMapper" >
+  <resultMap id="BaseResultMap" type="com.smzj.model.SysMemberTemp">
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="MEMBERID" jdbcType="VARCHAR" property="memberId" />
+    <result column="MEMBERNAME" jdbcType="VARCHAR" property="membername" />
+    <result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+    <result column="NICKNAME" jdbcType="VARCHAR" property="nickname" />
+    <result column="FLAG" jdbcType="DECIMAL" property="flag" />
+    <result column="TRUENAME" jdbcType="VARCHAR" property="truename" />
+    <result column="COMPANY" jdbcType="VARCHAR" property="company" />
+    <result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+    <result column="ZIP" jdbcType="VARCHAR" property="zip" />
+    <result column="TEL" jdbcType="VARCHAR" property="tel" />
+    <result column="FAX" jdbcType="VARCHAR" property="fax" />
+    <result column="MOBILE" jdbcType="VARCHAR" property="mobile" />
+    <result column="QQ" jdbcType="VARCHAR" property="qq" />
+    <result column="EMAIL" jdbcType="VARCHAR" property="email" />
+    <result column="ISDEL" jdbcType="DECIMAL" property="isdel" />
+    <result column="ISDROP" jdbcType="DECIMAL" property="isdrop" />
+    <result column="ACTIVETIME" jdbcType="TIMESTAMP" property="activetime" />
+    <result column="REGTIME" jdbcType="TIMESTAMP" property="regtime" />
+    <result column="IDCARD" jdbcType="VARCHAR" property="idcard" />
+    <result column="COMPANYCODE" jdbcType="VARCHAR" property="companycode" />
+    <result column="YMONEY" jdbcType="VARCHAR" property="ymoney" />
+    <result column="CREDITNUM" jdbcType="VARCHAR" property="creditnum" />
+    <result column="CENTNUM" jdbcType="VARCHAR" property="centnum" />
+    <result column="MEMHEADPIC" jdbcType="VARCHAR" property="memheadpic" />
+    <result column="SSCARD" jdbcType="VARCHAR" property="sscard" />
+    <result column="TYPE" jdbcType="VARCHAR" property="type" />
+    <result column="PRE_USER_ID" jdbcType="VARCHAR" property="preUserid" />
+    <result column="PRE_USER_ACCOUNT" jdbcType="VARCHAR" property="preUserAccount" />
+    <result column="PRE_OPEN_ID" jdbcType="VARCHAR" property="preOpenId" />
+    <result column="PRE_CAKEY" jdbcType="VARCHAR" property="preCaKey" />
+    <result column="PRE_GENDER" jdbcType="VARCHAR" property="preGender" />
+    <result column="PRE_NATION" jdbcType="VARCHAR" property="preNation" />
+    <result column="PRE_BIRTH" jdbcType="VARCHAR" property="preBirth" />
+    <result column="PRE_WORKTEL" jdbcType="VARCHAR" property="preWorkTel" />
+    <result column="PRE_WORKFAX" jdbcType="VARCHAR" property="preWorkFax" />
+    <result column="PRE_LEGALTYPE" jdbcType="VARCHAR" property="preLegalType" />
+    <result column="PRE_ENTERPRISENAME" jdbcType="VARCHAR" property="preEnterpriseName" />
+    <result column="PRE_CREDITCODE" jdbcType="VARCHAR" property="preCreditCode" />
+    <result column="PRE_LEGALREPRESENTATIVE" jdbcType="VARCHAR" property="preLegalRepresentative" />
+    <result column="PRE_LEGALGENDER" jdbcType="VARCHAR" property="preLegalGender" />
+    <result column="PRE_LEGALNATION" jdbcType="VARCHAR" property="preLegalNation" />
+    <result column="PRE_AUTHLEVEL" jdbcType="VARCHAR" property="preAuthlevel" />
+    <result column="PRE_SYNC_STATUS" jdbcType="VARCHAR" property="preSyscStatus" />
+  </resultMap>
+
+  	<!-- 修改信息 -->
+  	<update id="reSetSysMemberMessage" parameterType="com.smzj.model.SysMemberTemp">
+  		update SYS_MEMBER_TEMP SET NICKNAME = #{nickname}, ADDRESS = #{address},
+  		ZIP = #{zip}, TEL= #{tel}, FAX = #{fax}, QQ = #{qq}
+  		where MEMBERID = #{memberId}
+  	</update>
+  	<!-- 根据id查询会员信息 -->
+	<select id="findBySysMemberId" resultMap="BaseResultMap">
+    	select * from SYS_MEMBER_TEMP where MEMBERID = #{memberId}
+    </select>
+	<select id="findBySysMemberByPerUserId" resultMap="BaseResultMap">
+    	select * from SYS_MEMBER_TEMP where pre_user_id = #{perUserId}
+    </select>
+
+    <!-- 需要修改 -->
+    <update id="updateMemberByPreUserId" parameterType="com.smzj.model.SysMemberTemp">
+    	update SYS_MEMBER_TEMP SET
+    	membername=#{membername,jdbcType=VARCHAR},
+    	password=#{password,jdbcType=VARCHAR},
+   		nickname=#{nickname,jdbcType=VARCHAR},
+   		flag=#{flag,jdbcType=DECIMAL},
+   		truename=#{truename,jdbcType=VARCHAR},
+   		company=#{company,jdbcType=VARCHAR},
+   		address=#{address,jdbcType=VARCHAR},
+   		zip=#{zip,jdbcType=VARCHAR},
+   		tel=#{tel,jdbcType=VARCHAR},
+   		fax=#{fax,jdbcType=VARCHAR},
+   		mobile=#{mobile,jdbcType=VARCHAR},
+   		qq=#{qq,jdbcType=VARCHAR},
+   		email=#{email,jdbcType=VARCHAR},
+   		isdel=#{isdel,jdbcType=DECIMAL},
+   		isdrop=#{isdrop,jdbcType=DECIMAL},
+   		activetime=#{activetime,jdbcType=TIMESTAMP},
+   		idcard=#{idcard,jdbcType=VARCHAR},
+   		companycode=#{companycode,jdbcType=VARCHAR},
+   		ymoney=#{ymoney,jdbcType=VARCHAR},
+    	creditnum=#{creditnum,jdbcType=VARCHAR},
+    	centnum=#{centnum,jdbcType=VARCHAR}
+   		<if test="memheadpic!='' and memheadpic != null ">
+			,MEMHEADPIC=#{memheadpic,jdbcType=VARCHAR}
+		</if>
+		<if test="sscard !='' and sscard != null ">
+			,SSCARD=#{sscard,jdbcType=VARCHAR}
+		</if>
+		<if test="type !='' and type != null ">
+			,TYPE=#{type,jdbcType=VARCHAR}
+		</if>
+		<if test="preUserAccount!='' and preUserAccount != null ">
+			,PRE_USER_ACCOUNT=#{preUserAccount,jdbcType=VARCHAR}
+		</if>
+		<if test="preOpenId!='' and preOpenId != null ">
+			,PRE_OPEN_ID=#{preOpenId,jdbcType=VARCHAR}
+		</if>
+		<if test="preCaKey !='' and preCaKey != null ">
+			,PRE_CAKEY=#{preCaKey,jdbcType=VARCHAR}
+		</if>
+		<if test="preGender !='' and preGender != null ">
+			,PRE_GENDER=#{preGender,jdbcType=VARCHAR}
+		</if>
+		<if test="preNation !='' and preNation != null ">
+			,PRE_NATION=#{preNation,jdbcType=VARCHAR}
+		</if>
+		<if test="preBirth !='' and preBirth != null ">
+			,PRE_BIRTH=#{preBirth,jdbcType=VARCHAR}
+		</if>
+		<if test="preWorkTel !='' and preWorkTel != null ">
+			,PRE_WORKTEL=#{preWorkTel,jdbcType=VARCHAR}
+		</if>
+		<if test="preWorkFax !='' and preWorkFax != null ">
+			,PRE_WORKFAX=#{preWorkFax,jdbcType=VARCHAR}
+		</if>
+		<if test="preLegalType !='' and preLegalType != null ">
+			,PRE_LEGALTYPE=#{preLegalType,jdbcType=VARCHAR}
+		</if>
+		<if test="preEnterpriseName !='' and preEnterpriseName != null ">
+			,PRE_ENTERPRISENAME=#{preEnterpriseName,jdbcType=VARCHAR}
+		</if>
+		<if test="preCreditCode !='' and preCreditCode != null ">
+			,PRE_CREDITCODE=#{preCreditCode,jdbcType=VARCHAR}
+		</if>
+		<if test="preLegalRepresentative !='' and preLegalRepresentative != null ">
+			,PRE_LEGALREPRESENTATIVE=#{preLegalRepresentative,jdbcType=VARCHAR}
+		</if>
+		<if test="preLegalGender !='' and preLegalGender != null ">
+			,PRE_LEGALGENDER=#{preLegalGender,jdbcType=VARCHAR}
+		</if>
+		<if test="preLegalNation !='' and preLegalNation != null ">
+			,PRE_LEGALNATION=#{preLegalNation,jdbcType=VARCHAR}
+		</if>
+		<if test="preAuthlevel !='' and preAuthlevel != null ">
+			,PRE_AUTHLEVEL=#{preAuthlevel,jdbcType=VARCHAR}
+		</if>
+		<if test="preSyscStatus !='' and preSyscStatus != null ">
+			,PRE_SYNC_STATUS=#{preSyscStatus,jdbcType=VARCHAR}
+		</if>
+  		where pre_user_id= #{preUserid}
+    </update>
+    
+    <update id="delSysMember">
+    	update SYS_MEMBER_TEMP SET
+    		isdel=1,
+    		ISDROP=1
+    		where MEMBERID = #{memberId}
+
+    </update>
+
+    <insert id="saveMember">
+    	insert into SYS_MEMBER_TEMP(memberid,membername,password,nickname,flag,truename,company,address,zip,tel,fax,mobile,qq,email,isdel,isdrop,activetime,regtime,idcard,companycode,ymoney,creditnum,centnum
+			<if test="memheadpic!='' and memheadpic != null ">
+				,MEMHEADPIC
+			</if>
+			<if test="sscard !='' and sscard != null ">
+				,SSCARD
+			</if>
+			<if test="type !='' and type != null ">
+				,TYPE
+			</if>
+			<if test="preUserid!='' and preUserid != null ">
+				,PRE_USER_ID
+			</if>
+			<if test="preUserAccount!='' and preUserAccount != null ">
+				,PRE_USER_ACCOUNT
+			</if>
+			<if test="preOpenId!='' and preOpenId != null ">
+				,PRE_OPEN_ID
+			</if>
+			<if test="preCaKey !='' and preCaKey != null ">
+				,PRE_CAKEY
+			</if>
+			<if test="preGender !='' and preGender != null ">
+				,PRE_GENDER
+			</if>
+			<if test="preNation !='' and preNation != null ">
+				,PRE_NATION
+			</if>
+			<if test="preBirth !='' and preBirth != null ">
+				,PRE_BIRTH
+			</if>
+			<if test="preWorkTel !='' and preWorkTel != null ">
+				,PRE_WORKTEL
+			</if>
+			<if test="preWorkFax !='' and preWorkFax != null ">
+				,PRE_WORKFAX
+			</if>
+			<if test="preLegalType !='' and preLegalType != null ">
+				,PRE_LEGALTYPE
+			</if>
+			<if test="preEnterpriseName !='' and preEnterpriseName != null ">
+				,PRE_ENTERPRISENAME
+			</if>
+			<if test="preCreditCode !='' and preCreditCode != null ">
+				,PRE_CREDITCODE
+			</if>
+			<if test="preLegalRepresentative !='' and preLegalRepresentative != null ">
+				,PRE_LEGALREPRESENTATIVE
+			</if>
+			<if test="preLegalGender !='' and preLegalGender != null ">
+				,PRE_LEGALGENDER
+			</if>
+			<if test="preLegalNation !='' and preLegalNation != null ">
+				,PRE_LEGALNATION
+			</if>
+			<if test="preAuthlevel !='' and preAuthlevel != null ">
+				,PRE_AUTHLEVEL
+			</if>
+			<if test="preSyscStatus !='' and preSyscStatus != null ">
+				,PRE_SYNC_STATUS
+			</if>
+    	)
+    	values(
+    		<if test="memberId!=null and memberId!=''">
+    			#{memberId,jdbcType=VARCHAR},
+    		</if>
+    		<if test="memberId!=null or memberId!=''">
+    			sys_guid(),
+    		</if>
+    		#{membername,jdbcType=VARCHAR},
+    		#{password,jdbcType=VARCHAR},
+    		#{nickname,jdbcType=VARCHAR},
+    		#{flag,jdbcType=DECIMAL},
+    		#{truename,jdbcType=VARCHAR},
+    		#{company,jdbcType=VARCHAR},
+    		#{address,jdbcType=VARCHAR},
+    		#{zip,jdbcType=VARCHAR},
+    		#{tel,jdbcType=VARCHAR},
+    		#{fax,jdbcType=VARCHAR},
+    		#{mobile,jdbcType=VARCHAR},
+    		#{qq,jdbcType=VARCHAR},
+    		#{email,jdbcType=VARCHAR},
+    		#{isdel,jdbcType=DECIMAL},
+    		#{isdrop,jdbcType=DECIMAL},
+    		#{activetime,jdbcType=TIMESTAMP},
+    		#{regtime,jdbcType=TIMESTAMP},
+    		#{idcard,jdbcType=VARCHAR},
+    		#{companycode,jdbcType=VARCHAR},
+    		#{ymoney,jdbcType=VARCHAR},
+    		#{creditnum,jdbcType=VARCHAR},
+    		#{centnum,jdbcType=VARCHAR}
+    		<if test="memheadpic!='' and memheadpic != null ">
+				, #{memheadpic,jdbcType=VARCHAR}
+			</if>
+			<if test="sscard !='' and sscard != null ">
+				,#{sscard,jdbcType=VARCHAR}
+			</if>
+			<if test="type !='' and type != null ">
+				,#{type,jdbcType=VARCHAR}
+			</if>
+			<if test="preUserid!='' and preUserid != null ">
+				,#{preUserid,jdbcType=VARCHAR}
+			</if>
+			<if test="preUserAccount!='' and preUserAccount != null ">
+				,#{preUserAccount,jdbcType=VARCHAR}
+			</if>
+			<if test="preOpenId!='' and preOpenId != null ">
+				,#{preOpenId,jdbcType=VARCHAR}
+			</if>
+			<if test="preCaKey !='' and preCaKey != null ">
+				,#{preCaKey,jdbcType=VARCHAR}
+			</if>
+			<if test="preGender !='' and preGender != null ">
+				,#{preGender,jdbcType=VARCHAR}
+			</if>
+			<if test="preNation !='' and preNation != null ">
+				,#{preNation,jdbcType=VARCHAR}
+			</if>
+			<if test="preBirth !='' and preBirth != null ">
+				,#{preBirth,jdbcType=VARCHAR}
+			</if>
+			<if test="preWorkTel !='' and preWorkTel != null ">
+				,#{preWorkTel,jdbcType=VARCHAR}
+			</if>
+			<if test="preWorkFax !='' and preWorkFax != null ">
+				,#{preWorkFax,jdbcType=VARCHAR}
+			</if>
+			<if test="preLegalType !='' and preLegalType != null ">
+				,#{preLegalType,jdbcType=VARCHAR}
+			</if>
+			<if test="preEnterpriseName !='' and preEnterpriseName != null ">
+				,#{preEnterpriseName,jdbcType=VARCHAR}
+			</if>
+			<if test="preCreditCode !='' and preCreditCode != null ">
+				,#{preCreditCode,jdbcType=VARCHAR}
+			</if>
+			<if test="preLegalRepresentative !='' and preLegalRepresentative != null ">
+				,#{preLegalRepresentative,jdbcType=VARCHAR}
+			</if>
+			<if test="preLegalGender !='' and preLegalGender != null ">
+				,#{preLegalGender,jdbcType=VARCHAR}
+			</if>
+			<if test="preLegalNation !='' and preLegalNation != null ">
+				,#{preLegalNation,jdbcType=VARCHAR}
+			</if>
+			<if test="preAuthlevel !='' and preAuthlevel != null ">
+				,#{preAuthlevel,jdbcType=VARCHAR}
+			</if>
+			<if test="preSyscStatus !='' and preSyscStatus != null ">
+				,#{preSyscStatus,jdbcType=VARCHAR}
+			</if>
+    	)
+    </insert>
+</mapper>

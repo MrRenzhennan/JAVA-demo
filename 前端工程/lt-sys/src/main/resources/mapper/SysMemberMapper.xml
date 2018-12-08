@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smzj.mapper.SysMemberMapper">
+  <resultMap id="BaseResultMap" type="com.smzj.model.SysMember">
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="MEMBERID" jdbcType="VARCHAR" property="memberid" />
+    <result column="MEMBERNAME" jdbcType="VARCHAR" property="membername" />
+    <result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+    <result column="NICKNAME" jdbcType="VARCHAR" property="nickname" />
+    <result column="FLAG" jdbcType="DECIMAL" property="flag" />
+    <result column="TRUENAME" jdbcType="VARCHAR" property="truename" />
+    <result column="COMPANY" jdbcType="VARCHAR" property="company" />
+    <result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+    <result column="ZIP" jdbcType="VARCHAR" property="zip" />
+    <result column="TEL" jdbcType="VARCHAR" property="tel" />
+    <result column="FAX" jdbcType="VARCHAR" property="fax" />
+    <result column="MOBILE" jdbcType="VARCHAR" property="mobile" />
+    <result column="QQ" jdbcType="VARCHAR" property="qq" />
+    <result column="EMAIL" jdbcType="VARCHAR" property="email" />
+    <result column="ISDEL" jdbcType="DECIMAL" property="isdel" />
+    <result column="ISDROP" jdbcType="DECIMAL" property="isdrop" />
+    <result column="ACTIVETIME" jdbcType="TIMESTAMP" property="activetime" />
+    <result column="REGTIME" jdbcType="TIMESTAMP" property="regtime" />
+    <result column="IDCARD" jdbcType="VARCHAR" property="idcard" />
+    <result column="COMPANYCODE" jdbcType="VARCHAR" property="companycode" />
+    <result column="TYPE" jdbcType="VARCHAR" property="type" />
+  </resultMap>
+
+  <select id="checkMemberFuns" resultType="Boolean">
+			SELECT nvl(COUNT(1),0) as count
+			  FROM sys_member smb
+			  LEFT JOIN sys_memberfuns smf
+			    ON smb.memberid = smf.memberid
+			WHERE smb.memberid = #{loginMemberId}
+			and smf.funcode like #{funCode}%
+  	</select>
+
+  	<select id="selectSysMember" resultMap="BaseResultMap">
+  	   select * from sys_member
+  	   <where>
+  	   	<if test="membername != null and membername != ''">
+	          membername like '%'||#{membername}||'%' or nickname like '%'||#{membername}||'%' or mobile like '%'||#{membername}||'%' or idcard like '%'||#{membername}||'%'
+	    </if>
+  	   	<if test="type != null and type != ''">
+	         and TYPE = #{type}
+	    </if>
+  	   </where>
+  	    order by REGTIME desc
+  	</select>
+
+  	<select id="findBySysMemberId" resultMap="BaseResultMap">
+    select * from SYS_MEMBER where MEMBERID = #{memberid}
+    </select>
+    <select id="findMemberByNameAndPwd" parameterType="com.smzj.model.SysMember" resultMap="BaseResultMap">
+    <![CDATA[
+    select * from SYS_MEMBER where MEMBERNAME = #{membername} and PASSWORD=#{password} and ISDEL = 0 and ISDROP <> 1
+    ]]>
+    </select>
+    <select id="findNormalMemberByID" resultMap="BaseResultMap">
+	    <![CDATA[
+	    select * from SYS_MEMBER where MEMBERID = #{memberid} and ISDEL = 0 and ISDROP <> 1
+		]]>
+    </select>
+	<update id="updateMember" parameterType="com.smzj.model.SysMember">
+    	update sys_member SET
+    	membername=#{membername,jdbcType=VARCHAR},
+    	password=#{password,jdbcType=VARCHAR},
+   		nickname=#{nickname,jdbcType=VARCHAR},
+   		flag=#{flag,jdbcType=DECIMAL},
+   		truename=#{truename,jdbcType=VARCHAR},
+   		company=#{company,jdbcType=VARCHAR},
+   		address=#{address,jdbcType=VARCHAR},
+   		zip=#{zip,jdbcType=VARCHAR},
+   		tel=#{tel,jdbcType=VARCHAR},
+   		fax=#{fax,jdbcType=VARCHAR},
+   		mobile=#{mobile,jdbcType=VARCHAR},
+   		qq=#{qq,jdbcType=VARCHAR},
+   		email=#{email,jdbcType=VARCHAR},
+   		isdel=#{isdel,jdbcType=DECIMAL},
+   		isdrop=#{isdrop,jdbcType=DECIMAL},
+   		activetime=#{activetime,jdbcType=TIMESTAMP},
+   		idcard=#{idcard,jdbcType=VARCHAR},
+   		companycode=#{companycode,jdbcType=VARCHAR}
+  		where MEMBERID = #{memberid}
+    </update>
+    <!-- 根据ID重置会员密码 -->
+  	<update id="updatePassword" parameterType="com.smzj.model.SysMember">
+  		<![CDATA[
+			update SYS_MEMBER set PASSWORD = #{password} where MEMBERID = #{memberid}
+		 ]]>
+  	</update>
+
+<update id="updateActiveTime" parameterType="com.smzj.model.SysMember">
+  		<![CDATA[
+			update SYS_MEMBER set ACTIVETIME = #{activetime} where MEMBERID = #{memberid}
+		 ]]>
+  	</update>
+  	<select id="selectByRankIdcard" resultMap="BaseResultMap">
+  		select m.*
+  		from sys_member m
+  		join sys_member_rank mr on m.memberid=mr.memberid and mr.rankid=#{rankid}
+  		where m.idcard=#{idcard}
+  	</select>
+  	
+  	<select id="selectByRankidAndMobile" resultType="hashmap">
+  		select m.*,mr.rankid
+		from sys_member m
+		join sys_member_rank mr on m.memberid=mr.memberid and mr.rankid=#{rankid}
+		where m.mobile=#{mobile}
+  	</select>
+  	<select id="findMemberByMobileAndPwd" parameterType="com.smzj.model.SysMember"  resultMap="BaseResultMap">
+    	select * from sys_member where MOBILE=#{mobile}
+    	<if test="password!= null and password!= ''">
+			and PASSWORD = #{password} and ISDEL = 0
+    	</if>
+    	<![CDATA[
+			and ISDROP <> 1
+		]]>
+    </select>
+    <select id="findMemberByMobileAndPwd1" parameterType="com.smzj.model.SysMember"  resultMap="BaseResultMap">
+    	select * from sys_member where MOBILE=#{mobile}
+    	<if test="password!= null and password!= ''">
+			and PASSWORD = #{password} and ISDEL = 0
+    	</if>
+    	<![CDATA[
+			and ISDROP <> 1
+		]]>
+    </select>
+    
+    <update id="updateMemberAll" parameterType="com.smzj.model.SysMember">
+    	update SYS_MEMBER SET
+    	membername=#{membername,jdbcType=VARCHAR},
+    	password=#{password,jdbcType=VARCHAR},
+   		nickname=#{nickname,jdbcType=VARCHAR},
+   		flag=#{flag,jdbcType=DECIMAL},
+   		truename=#{truename,jdbcType=VARCHAR},
+   		company=#{company,jdbcType=VARCHAR},
+   		address=#{address,jdbcType=VARCHAR},
+   		zip=#{zip,jdbcType=VARCHAR},
+   		tel=#{tel,jdbcType=VARCHAR},
+   		fax=#{fax,jdbcType=VARCHAR},
+   		mobile=#{mobile,jdbcType=VARCHAR},
+   		qq=#{qq,jdbcType=VARCHAR},
+   		email=#{email,jdbcType=VARCHAR},
+   		isdel=#{isdel,jdbcType=DECIMAL},
+   		isdrop=#{isdrop,jdbcType=DECIMAL},
+   		activetime=#{activetime,jdbcType=TIMESTAMP},
+   		idcard=#{idcard,jdbcType=VARCHAR},
+   		companycode=#{companycode,jdbcType=VARCHAR}
+  		where MEMBERID = #{memberid}
+    </update>
+
+    <insert id="saveMember">
+    	insert into sys_member(memberid,membername,password,nickname,flag,truename,company,address,zip,tel,fax,mobile,qq,email,isdel,isdrop,activetime,regtime,idcard,companycode,ymoney,creditnum,centnum)
+    	values(
+    		<if test="memberid!=null and memberid!=''">
+    			#{memberid,jdbcType=VARCHAR},
+    		</if>
+    		<if test="memberid==null or memberid==''">
+    			sys_guid(),
+    		</if>
+    		#{membername,jdbcType=VARCHAR},
+    		#{password,jdbcType=VARCHAR},
+    		#{nickname,jdbcType=VARCHAR},
+    		#{flag,jdbcType=DECIMAL},
+    		#{truename,jdbcType=VARCHAR},
+    		#{company,jdbcType=VARCHAR},
+    		#{address,jdbcType=VARCHAR},
+    		#{zip,jdbcType=VARCHAR},
+    		#{tel,jdbcType=VARCHAR},
+    		#{fax,jdbcType=VARCHAR},
+    		#{mobile,jdbcType=VARCHAR},
+    		#{qq,jdbcType=VARCHAR},
+    		#{email,jdbcType=VARCHAR},
+    		#{isdel,jdbcType=DECIMAL},
+    		#{isdrop,jdbcType=DECIMAL},
+    		#{activetime,jdbcType=TIMESTAMP},
+    		#{regtime,jdbcType=TIMESTAMP},
+    		#{idcard,jdbcType=VARCHAR},
+    		#{companycode,jdbcType=VARCHAR},
+    		#{ymoney,jdbcType=VARCHAR},
+    		#{creditnum,jdbcType=VARCHAR},
+    		#{centnum,jdbcType=VARCHAR}
+    	)
+    </insert>
+
+    <select id="selectBySafe" resultMap="BaseResultMap">
+    	select m.* from
+		sys_member m
+		join sys_member_safe ms on m.memberid=ms.memberid
+		where 1=1
+		<choose>
+			<when test="safeType=='mobile'">
+			and ms.ismobile=${safeKey}
+			and m.mobile='${safeValue}'
+			</when>
+			<when test="safeType=='email'">
+			and ms.isemail=${safeKey}
+			and m.email='${safeValue}'
+			</when>
+		</choose>
+    </select>
+
+       <!-- 更新手机号查 用户是否已存在-->
+    <select id="selectByMobile" resultMap="BaseResultMap">
+    	select * from sys_member where mobile=#{mobile}
+    </select>
+
+    <update id="updatePasswordByMobile">
+  		update sys_member set password=#{password} where mobile=#{mobile}
+  	</update>
+
+  	<select id="selectByMemberidAndRankid" resultType="hashmap">
+  		select m.*,mr.rankid
+		from sys_member m
+		left join sys_member_rank mr on m.memberid=mr.memberid and mr.rankid=#{rankid}
+		where m.memberid=#{memberid}
+  	</select>
+</mapper>

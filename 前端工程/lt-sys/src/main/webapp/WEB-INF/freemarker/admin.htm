@@ -1,0 +1,45 @@
+<html>
+<head>
+<#include "/common/admin/head.htm">
+<#include "/common/admin/headfile.htm">
+<script language="javascript" type="text/javascript">
+</script>
+</head>
+<body>
+<#include "/common/admin/headinfo.htm">
+<div class="cm-wrapper">
+<div class="cm-center">
+<div class="cm-sitemap">
+	<div class="fl navinfo">
+		<span>您现在的位置：</span>
+		<span><a href="${SysSite}">我的管理首页</a></span>
+		<span>&nbsp;&gt;&nbsp;</span>
+		<span>系统管理平台</span>
+	</div>
+	<div class="clear"></div>
+</div>
+<div class="cm-center">
+<div class="cm-pagebody">
+	<div class="fl leftbody">
+		<div class="titlediv"><div class="tname">系统管理平台</div></div>
+		<div class="menusdiv">
+			<div class="menus padding">${MenuHtml!}</div>
+		</div>
+	</div>
+	<div class="fr rightbody">
+		<div class="titlediv"><div class="tname">欢迎登录到系统管理平台！</div></div>
+		<div class="bodydiv">
+			<div class="padding">
+				<div style="height:500px; background:url(${RootPath}static/img/indexpic.jpg) no-repeat;">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="clear"></div>
+</div>
+</div>
+</div>
+</div>
+<#include "/common/admin/bottom.htm">
+</body>
+</html>

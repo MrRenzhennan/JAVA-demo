@@ -1,0 +1,106 @@
+<html>
+<head>
+<#include "/common/admin/head.htm">
+<#include "/common/admin/headfile.htm">
+
+<script language="javascript" type="text/javascript">
+		
+</script>
+<script type="text/javascript" src="${RootPath}static/js/system/rolepermit.js"></script>
+</head>
+<body>
+<#include "/common/admin/headinfo.htm">
+<div class="cm-fullpage">
+<div class="cm-center">
+<div class="cm-sitemap">
+	<div class="fl navinfo">
+		<span>您现在的位置：</span>
+		<span><a href="${MainSite}">我的管理首页</a></span>
+		<span>&nbsp;&gt;&nbsp;</span>
+		<span><a href="${SysSite}admin.html">系统管理平台</a></span>
+		<span>&nbsp;&gt;&nbsp;</span>
+		<span><a href="${SysSite}system/role.html">角色管理</a></span>
+		<span>&nbsp;&gt;&nbsp;</span>
+		<span>角色授权</span>
+	</div>
+	<div class="clear"></div>
+</div>
+<div class="cm-center">
+<div class="cm-pagebody">
+	<div class="fl leftbody">
+		<div class="titlediv"><div class="tname">系统管理平台</div></div>
+		<div class="menusdiv">
+			<div class="menus padding">${MenuHtml}</div>
+		</div>
+	</div>
+
+	<input type="hidden" id="hid_orgtype" value="${orgtype}"/>
+	<input type="hidden" id="hid_rolecode" value="${rolecode}"/>
+	<input type="hidden" id="hid_appcode" value="${appcode}"/>
+
+	<div class="fr rightbody">
+		<div class="titlediv"><div class="tname">角色授权 - ${rolename!'管理员'}</div></div>
+		<div class="hsplit">&nbsp;</div>
+		<div class="bothdiv">
+			<div class="fl" style="width:145px;">
+				<div class="bodydiv2">
+					<div class="itemlist padding">
+						<!-- row begin -->
+						<#list appList as app>
+							<div class="item" sign="app_${app.appcode}">
+								<div class="fl icos"><div class="ico"></div></div>
+								<div class="fl mtext"><a href="javascript:void(0);" onclick="toUrl('${RootPath}','${app.appcode}')">${app.appname}</a></div>
+								<div class="clear"></div>
+							</div>
+						</#list>
+						<!-- row end -->
+					</div>
+				</div>
+			</div>
+			<div class="fr" style="width:800px;">
+				<table class="listtable" id="tb_mod" align="center" cellpadding="0" cellspacing="1" border="0">
+				<tr class="header">
+					<td width="100" class="center">功能编码</td>
+					<td width="180" class="center">功能名称</td>
+					<td class="center">动作列表</td>
+				</tr>
+				<!-- loop begin -->
+				<#list modActList as modAct>
+					<tr class="trow" id="${modAct.appcode}_${modAct.modcode}_${modAct.modid}">
+						<td class="left ttext">${modAct.modcode}</td>
+						<td class="left ttext">
+						<#if (modAct.parentcode=="")>
+							<b>${modAct.modname}</b>
+						<#else>
+							&nbsp;&nbsp;&nbsp;&nbsp;${modAct.modname}
+						</#if>
+						</td>
+						<td class="left ttext">${modAct.actname}</td>
+					</tr>
+				</#list>
+				<!-- loop end -->
+				</table>
+
+				<form id="subform" class="pageform" action="" method="post" target="HiddenFrame">
+				<input type="hidden" name="subflag" value="1"/>
+				<div class="buttons">
+					<input type="button" class="formbtn" onclick="savePermit();" value="确定" />
+					<input type="button" class="formbtn" onclick="checkAll();" value="全选" />
+					<input type="button" class="formbtn" onclick="removeAll();" value="取消全选" />
+				</div>
+				<div class="msgrow">
+					<div id="Comment_Msg" class="redcomment"></div>
+				</div>
+				</form>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</div>
+	<div class="clear"></div>
+</div>
+</div>
+</div>
+</div>
+<#include "/common/admin/bottom.htm">
+</body>
+</html>

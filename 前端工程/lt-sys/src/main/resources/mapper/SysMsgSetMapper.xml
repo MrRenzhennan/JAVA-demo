@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smzj.mapper.SysMsgSetMapper">
+    <resultMap id="BaseResultMap" type="com.smzj.model.SysMsgSet">
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="ID" jdbcType="DECIMAL" property="id" />
+    <result column="MSGFLAG" jdbcType="VARCHAR" property="msgflag" />
+    <result column="MSGTITLE" jdbcType="VARCHAR" property="msgtitle" />
+    <result column="MSGTEMPLATE" jdbcType="VARCHAR" property="msgtemplate" />
+    <result column="ISDISABLE" jdbcType="DECIMAL" property="isdisable" />
+    <result column="UPDAYS" jdbcType="DECIMAL" property="updays" />
+    <result column="UPMINS" jdbcType="DECIMAL" property="upmins" />
+    <result column="UPHOURS" jdbcType="DECIMAL" property="uphours" />
+    <result column="SENDTIME" jdbcType="TIMESTAMP" property="sendtime" />
+    <result column="SENDTIMEFLAG" jdbcType="DECIMAL" property="sendtimeflag" />
+    <result column="MSGWAY" jdbcType="DECIMAL" property="msgway" />
+    <result column="LINKURL" jdbcType="VARCHAR" property="linkurl" />
+  </resultMap>
+  
+  <sql id="table_column">
+  ID,MSGFLAG,MSGTITLE,MSGTEMPLATE,ISDISABLE,UPDAYS,UPMINS,UPHOURS,SENDTIME,SENDTIMEFLAG,MSGWAY,LINKURL
+  </sql>
+   <sql id="entity_properties">
+   	#{id,jdbcType=DECIMAL},#{msgflag,jdbcType=VARCHAR},#{msgtitle,jdbcType=VARCHAR},#{msgtemplate,jdbcType=VARCHAR},#{isdisable,jdbcType=DECIMAL},
+   	#{updays,jdbcType=DECIMAL},#{upmins,jdbcType=DECIMAL},#{uphours,jdbcType=DECIMAL},
+   	#{sendtime,jdbcType=TIMESTAMP},#{sendtimeflag,jdbcType=DECIMAL},#{msgway,jdbcType=DECIMAL},#{linkurl,jdbcType=VARCHAR}
+   </sql>
+   <insert id="addSysMsgSet" parameterType="com.smzj.model.SysMsgSet">
+	    insert into SYS_MSG_SET(<include refid="table_column"/>) values(<include refid="entity_properties" />)
+   </insert>
+  
+  <select id="selectMaxId" resultType="int">
+  	select nvl(max(t.id),0)+1 from sys_msg_set t
+  </select>
+  
+  <select id="selectByMsgFlag" resultType="java.util.Map" parameterType="string">
+  select * from sys_msg_set where msgflag=#{msgflag}
+  </select>
+  <select id="selectByMSGFlag" resultMap="BaseResultMap">
+  	select * from SYS_MSG_SET where MSGFLAG=#{msgflag}
+  </select>
+  <select id="selectSysMsgSets" resultMap="BaseResultMap">
+     select * from sys_msg_set where msgway=4
+  </select>
+  <select id="selectSysMsgSet" resultMap="BaseResultMap">
+     select * from sys_msg_set where id=#{id}
+  </select>
+  
+  <select id="selectByMap" parameterType="Map" resultMap="BaseResultMap">
+  	SELECT SYS_MSG_SET
+  	<where>
+  		<if test="source != null and source > -1">
+  			AND SOURCE = #{source, jdbcType=DECIMAL}
+  		</if>
+  		<if test="name != null and name != ''">
+  			AND NAME = #{name, jdbcType=VARCHAR}
+  		</if>
+  	</where>
+  </select>
+</mapper>

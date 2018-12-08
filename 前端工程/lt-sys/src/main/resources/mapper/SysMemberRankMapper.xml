@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.smzj.mapper.SysMemberRankMapper" >
+  <resultMap id="SysMemberRankMap" type="com.smzj.model.SysMemberRank" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="MEMBERID" property="memberid" jdbcType="VARCHAR" />
+    <result column="RANKID" property="rankid" jdbcType="VARCHAR" />
+    <result column="ADDTIME" property="addtime" jdbcType="TIMESTAMP"/>
+  </resultMap>
+
+  <insert id="addMemberRank" parameterType="com.smzj.model.SysMemberRank">
+  	insert into sys_member_rank(id,memberid,rankid,addtime)
+  	values(
+  		sys_guid(),
+  		#{memberid,jdbcType=VARCHAR},
+  		#{rankid,jdbcType=VARCHAR},
+  		#{addtime,jdbcType=TIMESTAMP}
+  	)
+  </insert>
+
+  <select id="selectByMemberAndRank" resultType="com.smzj.model.SysMemberRank">
+  	select * from sys_member_rank
+  	where 1=1
+  	<if test="memberid!=null and memberid!=''">
+  		and memberid='${memberid}'
+  	</if>
+  	<if test="rankid!=null and rankid!=''">
+  		and rankid='${rankid}'
+  	</if>
+  </select>
+  <select id="selectByIdAndRankId" resultMap="SysMemberRankMap">
+		select * from SYS_MEMBER_RANK where RANKID =#{rankid} and MEMBERID = #{memberid}
+  </select>
+  <select id="queryAllSysMemberRank" resultMap="SysMemberRankMap">
+		select * from SYS_MEMBER_RANK where MEMBERID = #{memberid}
+  </select>
+
+  <insert id="saveMemberRank" parameterType="com.smzj.model.SysMemberRank">
+  	insert into sys_member_rank(id,memberid,rankid)
+  	values(
+  		sys_guid(),
+  		#{memberid,jdbcType=VARCHAR},
+  		#{rankid,jdbcType=VARCHAR}
+  	)
+  </insert>
+  <delete id="deleteMemberRank" parameterType="com.smzj.model.SysMemberRank">
+	delete from sys_member_rank where RANKID =#{rankid} and MEMBERID = #{memberid}
+  </delete>
+
+	<select id="selectisExistRank" resultType="int">
+		select count(-1)
+		from sys_member m
+		join sys_member_rank mr on m.memberid=mr.memberid
+		where 1=1
+		<choose>
+			<when test="rankid!=null and rankid=='MemEmail'">
+				and m.email='${value}' and mr.rankid='${rankid}'
+			</when>
+			<when test="rankid!=null and rankid=='MemMobile'">
+				and m.mobile='${value}' and mr.rankid='${rankid}'
+			</when>
+		</choose>
+	</select>
+
+	<select id="selectPSocialCountByIdcard" resultType="int">
+		select count(-1)
+		from sys_member_rank mr
+		join sys_member m on m.memberid=mr.memberid
+		where mr.rankid='MemPSocialSecurity' and m.idcard=#{idcard}
+	</select>
+
+	<select id="selectCsocialCountByCompanycode" resultType="int">
+		select count(-1)
+		from sys_member_rank mr
+		join sys_member_c_social_security cs on mr.memberid=cs.memberid
+		where mr.rankid='MemCSocialSecurity' and cs.companycode=#{companycode}
+	</select>
+	<delete id="deleteByMemberId">
+  		delete from sys_member_rank where memberid=#{memberid}
+    </delete>
+
+    <delete id="deleteSocialByMemberId">
+  		delete from sys_member_c_social_security where memberid=#{memberid}
+    </delete>
+</mapper>

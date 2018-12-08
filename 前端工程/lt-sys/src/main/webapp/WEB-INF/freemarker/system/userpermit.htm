@@ -1,0 +1,180 @@
+<html>
+<head>
+<#include "/common/admin/head.htm">
+<#include "/common/admin/headfile.htm">
+<link rel='stylesheet' href="${RootPath}static/js/common/ztree/zTreeStyle/zTreeStyle.css"/>
+<script type="text/javascript" src="${RootPath}static/js/common/ztree/js/jquery.ztree.core-3.5.js"></script>
+<script type="text/javascript" src="${RootPath}static/js/common/jquery.page.js"></script>
+<script type="text/javascript">
+$("document").ready(function(){
+        	$("#checkall").click(
+           		function(){
+           			if(this.checked){
+           				$("input[name='rolecheck']").each(function(){this.checked=true;});
+           			}else{
+           				$("input[name='rolecheck']").each(function(){this.checked=false;});
+           			}
+           		}
+           	);
+});
+
+function subForm(){
+		$.ajax({
+			url : '${RootPath}system/setUserRole.html',
+			type : "post",
+			data : $("#subform").serialize(),
+			dataType: 'json',
+			async: false,
+			success : function(d) {
+				if(d.code=="-1"){
+					var layer = RootElement.JsCore.FrameLayer('Infomation');
+					layer.TipMode = true;
+					layer.TipFlag ="-1";
+					layer.TipTitle ='';
+					layer.TipText = d.msg;
+					layer.CloseFun = function (){};
+					layer.open();
+					layer = null;
+				}else if(d.code=="1"){
+					var layer = RootElement.JsCore.FrameLayer('Infomation');
+					layer.TipMode = true;
+					layer.TipFlag = d.code;
+					layer.TipTitle = d.title;
+					layer.TipText = d.msg;
+					layer.CloseFun = function (){RootElement.location.href=d.url};
+					layer.open();
+					layer = null;
+				}else{
+					var layer = RootElement.JsCore.FrameLayer('Infomation');
+					layer.TipMode = true;
+					layer.TipFlag ="1";
+					layer.TipTitle ='';
+					layer.TipText = d.msg;
+					layer.CloseFun = function (){};
+					layer.open();
+					layer = null;
+				}
+			},
+			error: function(d) {
+				RootElement.errorMessage(d);
+			}
+		});
+}
+
+</script>
+<style type="text/css">
+.ztree li button.switch {visibility:hidden; width:1px;}
+.ztree li button.switch.roots_docu {visibility:visible; width:16px;}
+.ztree li button.switch.center_docu {visibility:visible; width:16px;}
+.ztree li button.switch.bottom_docu {visibility:visible; width:16px;}
+	</style>
+</head>
+<body>
+<#include "/common/admin/headinfo.htm">
+<div class="cm-fullpage">
+<div class="cm-center">
+<div class="cm-sitemap">
+	<div class="fl navinfo">
+		<span>您现在的位置：</span>
+		<span><a href="${MainSite}">我的管理首页</a></span>
+		<span>&nbsp;&gt;&nbsp;</span>
+		<span><a href="${SysSite}admin.html">系统管理平台</a></span>
+		<span>&nbsp;&gt;&nbsp;</span>
+		<span><a href="${SysSite}system/user.html">操作员管理</a></span>
+		<span>&nbsp;&gt;&nbsp;</span>
+		<span>操作员授权</span>
+	</div>
+	<div class="clear"></div>
+</div>
+<div class="cm-center">
+<div class="cm-pagebody">
+	<div class="fl leftbody">
+		<div class="titlediv"><div class="tname">系统管理平台</div></div>
+		<div class="menusdiv">
+			<div class="menus padding">${MenuHtml}</div>
+		</div>
+	</div>
+	<div class="fr rightbody">
+		<div class="titlediv"><div class="tname">操作员授权 - ${(sysuser.username)!}</div></div>
+		<div class="hsplit">&nbsp;</div>
+		<form id="subform" class="pageform" action="/system/setUserRole.html" method="post" target="HiddenFrame">
+		<input type="hidden" id="subflag" name="subflag" value="${subflag}"/>
+		<input type="hidden" id="subflag" name="flag" value="${flag!}"/>
+		<table class="listtable" align="center" cellpadding="0" cellspacing="1" border="0">
+			<tr class="header">
+				<td width="30" class="center">
+					<div id="CheckAllRow">
+						<div class="checkbox">
+							<div class="fl control"><input id="checkall" name="checkall" type="checkbox" value="" /></div>
+							<div class="clear"></div>
+						</div>
+					</div>
+				</td>
+				<td width="150" class="center">角色名称</td>
+				<td class="center">角色描述</td>
+			</tr>
+			<#list roleList as role>
+				<#if orgtype?? && orgtype == '3'>
+					<#if role.sysRole.sortCode gt 100>
+						<tr class="trow">
+							<td class="center tno">
+								<div id="adminRow">
+									<div class="checkbox">
+										<div class="fl control">
+										<input type="checkbox"
+				            			<#if (role.isChecked)>
+											checked="checked"
+										</#if>
+				            				name="rolecheck" value="${role.sysRole.roleCode}"/>
+										<div class="clear"></div>
+									</div>
+								</div>
+							</td>
+							<td class="left ttext">${role.sysRole.roleName}</td>
+							<td class="left ttext">${role.sysRole.roleMemo}</td>
+						</tr>
+					</#if>
+				<#else>
+					<tr class="trow">
+						<td class="center tno">
+							<div id="adminRow">
+								<div class="checkbox">
+									<div class="fl control">
+									<input type="checkbox"
+			            			<#if (role.isChecked)>
+										checked="checked"
+									</#if>
+			            				name="rolecheck" value="${role.sysRole.roleCode}"/>
+									<div class="clear"></div>
+								</div>
+							</div>
+						</td>
+						<td class="left ttext">${role.sysRole.roleName}</td>
+						<td class="left ttext">${role.sysRole.roleMemo}</td>
+					</tr>
+				</#if>
+            </#list>
+
+		</table>
+
+
+		<input type="hidden" name="subflag" value="1"/>
+		<input type="hidden" name="orgtype" value="${(sysuser.orgtype)!}" />
+        <input type="hidden" name="userid" value="${(sysuser.userid)!}" />
+
+		<div class="buttons">
+			<input type="button" class="formbtn" onclick="subForm()" value="确定" />
+		</div>
+		<div class="msgrow">
+			<div id="Comment_Msg" class="redcomment"></div>
+		</div>
+		</form>
+	</div>
+	<div class="clear"></div>
+</div>
+</div>
+</div>
+</div>
+<#include "/common/admin/bottom.htm">
+</body>
+</html>

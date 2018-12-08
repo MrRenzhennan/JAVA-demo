@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.smzj.mapper.SysRoleMapper" >
+  <resultMap id="SysRole" type="com.smzj.model.SysRole" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="ORGTYPE" property="orgType" jdbcType="INTEGER" />
+    <id column="ROLECODE" property="roleCode" jdbcType="VARCHAR" />
+    <result column="ROLENAME" property="roleName" jdbcType="VARCHAR" />
+    <result column="ROLEMEMO" property="roleMemo" jdbcType="VARCHAR" />
+    <result column="ISDEL" property="isEel" jdbcType="INTEGER" />
+    <result column="SORTCODE" property="sortCode" jdbcType="INTEGER" />
+    <result column="ADDTIME" property="addTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="SysRoleCount" type="com.smzj.model.SysRole" >
+    <result column="usercount" property="sortCode" jdbcType="INTEGER" />
+  </resultMap>
+
+   <sql id="table_column">
+      ORGTYPE,ROLECODE,ROLENAME,ROLEMEMO,SORTCODE,ISDEL,ADDTIME
+   </sql>
+   <sql id="entity_properties">
+   	   #{orgType, jdbcType=INTEGER},
+	   #{roleCode, jdbcType=VARCHAR},
+	   #{roleName,jdbcType=VARCHAR },
+	   #{roleMemo, jdbcType=VARCHAR},
+	   #{sortCode, jdbcType=INTEGER},
+	   #{isEel, jdbcType=INTEGER},
+	   #{addTime, jdbcType=TIMESTAMP}
+   </sql>
+  	<update id="updateRoleIsDel" parameterType="SysRole">
+		update SYS_ROLE set ISDEL = #{isEel} where ROLECODE = #{roleCode}
+  	</update>
+
+  	<select id="selectCountRoleUser" resultMap="SysRoleCount">
+		SELECT count(*) AS usercount
+		  FROM SYS_USER_ROLE SUR
+		  LEFT JOIN SYS_USER SU
+		    ON SUR.USERID = SU.USERID
+		 WHERE sur.ROLECODE = #{roleCode}
+		 and su.isdrop = 0
+	</select>
+
+  	<delete id="delRole">
+		delete from SYS_ROLE where ROLECODE = #{roleCode}
+  	</delete>
+
+  	<delete id="delRolePermit">
+		delete from SYS_ROLE_PERMIT where ROLECODE = #{roleCode}
+  	</delete>
+
+	<select id="selectNotDelRoleByOrgtype" resultMap="SysRole">
+    	select * from SYS_ROLE where orgtype = #{orgtype} and ISDEL = 0 order by sortcode
+  	</select>
+
+  	<insert id="sysRoleAdd" parameterType="com.smzj.model.SysRole">
+	    <selectKey keyProperty="roleCode" resultType="String" order="BEFORE">
+	       <![CDATA[ select sys_guid() from dual]]>
+	    </selectKey>
+	    insert into SYS_ROLE (<include refid="table_column"/>)values (<include refid="entity_properties" />)
+	</insert>
+
+  	<select id="sysRoleById" resultMap="SysRole" >
+    	select * from SYS_ROLE where ROLECODE =#{roleCode}
+  	</select>
+	<update id="sysRoleUpdate" parameterType="com.smzj.model.SysRole">
+		update SYS_ROLE set ORGTYPE=#{orgType},ROLENAME=#{roleName},ROLEMEMO=#{roleMemo},ISDEL=#{isEel},SORTCODE=#{sortCode}
+		<where>
+			ROLECODE=#{roleCode}
+		</where>
+	</update>
+	
+	<select id="selectRoleByOrgtype" resultMap="SysRole">
+    	select * from SYS_ROLE 
+    	<where>
+  			<if test="orgtype!= null and orgtype!= '' ">
+				orgtype = #{orgtype}
+			</if>
+			<if test="rolename!= null and rolename!='' ">
+				and rolename like '%'||#{rolename}||'%'
+			</if>
+  		</where>
+    	 order by sortcode
+  	</select>
+
+</mapper>

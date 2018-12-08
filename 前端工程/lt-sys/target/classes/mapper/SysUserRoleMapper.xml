@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.smzj.mapper.SysUserRoleMapper" >
+  <resultMap id="SysUserRole" type="com.smzj.model.SysUserRole" >
+    <id column="USERID" property="userid" jdbcType="VARCHAR" />
+    <id column="ROLECODE" property="rolecode" jdbcType="VARCHAR" />
+  </resultMap>
+
+   <sql id="table_column">
+      USERID,ROLECODE
+   </sql>
+   <sql id="entity_properties">
+   	   #{userid, jdbcType=VARCHAR},
+	   #{rolecode, jdbcType=VARCHAR}
+   </sql>
+	<insert id="insertSysUserRole" parameterType="com.smzj.model.SysUserRole">
+	    insert into SYS_USER_ROLE (<include refid="table_column"/>)values (<include refid="entity_properties" />)
+	</insert>
+
+	<select id="selectRoleByUserid" resultMap="SysUserRole">
+    	select * from SYS_USER_ROLE where USERID = #{userid}
+  	</select>
+
+  	<delete id="delRoleByUserid">
+		delete from SYS_USER_ROLE where USERID = #{userid}
+  	</delete>
+
+</mapper>

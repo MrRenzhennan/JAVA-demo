@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smzj.mapper.SysMemberFeedbackPicMapper">
+  <resultMap id="BaseResultMap" type="com.smzj.model.SysMemberFeedbackPic">
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="PICID" jdbcType="VARCHAR" property="picid" />
+    <result column="FEEDBACKID" jdbcType="VARCHAR" property="feedbackid" />
+    <result column="FILEPATH" jdbcType="VARCHAR" property="filepath" />
+    <result column="FILETYPE" jdbcType="VARCHAR" property="filetype" />
+    <result column="MEMBERID" jdbcType="VARCHAR" property="memberid" />
+    <result column="ADDTIME" jdbcType="TIMESTAMP" property="addtime" />
+  </resultMap>
+  <insert id="insertModel">
+  	insert all
+  	<foreach collection="list" item="item" index="index" separator="">
+  		into sys_member_feedback_pic
+	  	(
+	  		picid,
+	  		feedbackid,
+	  		filepath,
+	  		filetype,
+	  		memberid,
+	  		addtime
+	  	)
+	  	values
+	  	(
+	  		sys_guid(),
+	  		#{item.feedbackid,jdbcType=VARCHAR},
+	  		#{item.filepath,jdbcType=VARCHAR},
+	  		#{item.filetype,jdbcType=VARCHAR},
+	  		#{item.memberid,jdbcType=VARCHAR},
+	  		sysdate
+	  	)
+  	</foreach>
+  	select * from dual
+  </insert>
+</mapper>

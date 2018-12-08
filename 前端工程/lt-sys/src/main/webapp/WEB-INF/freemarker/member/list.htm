@@ -1,0 +1,176 @@
+<html>
+<head>
+<#include "/common/admin/head.htm">
+<#include "/common/admin/headfile.htm">
+<link rel='stylesheet' href="${RootPath}static/js/common/ztree/zTreeStyle/zTreeStyle.css"/>
+<script type="text/javascript" src="${RootPath}static/js/common/ztree/js/jquery.ztree.core-3.5.js"></script>
+<script type="text/javascript" src="${RootPath}static/js/common/jquery.page.js"></script>
+<script type="text/javascript">
+function MemCenter(memberid) {
+	var layer = top.JsCore.FrameLayer('memcener');
+	layer.TipMode = false;
+	layer.TipTitle = "会员 “张青青 13643860217” 信息全景";
+	layer.ShowClose = true;  // 是否显示关闭按钮
+	layer.LayerUrl = '${RootPath}memcenter/index.html?memberid='+memberid; // 弹出层URL
+	layer.Scrolling = 'auto'; // 滚动条
+	layer.Width = 1000; // 弹出层宽度
+	layer.Height = 450; // 弹出层高度
+	layer.open();
+	layer = null;
+}
+function resetPwd(memberid){
+	if(confirm("确定要重置该会员的密码吗?")){
+		$.ajax({
+		  type:"post",
+		  async:false,
+		  url: "${RootPath}member/resetpwd",
+		  data:{memberid:memberid},
+		  cache: false,
+		  dataType:'json',
+		  success: function(json){
+		  	openMsg(json.result,json.msg);
+		  },
+		  error:function(){
+		  	openMsg(-1,"服务器错误");
+		  }
+		});
+	}
+}
+
+function del(memberid){
+	if(confirm("确定要删除该会员吗?")){
+		$.ajax({
+		  type:"post",
+		  async:false,
+		  url: "${RootPath}member/del",
+		  data:{memberid:memberid},
+		  cache: false,
+		  dataType:'json',
+		  success: function(json){
+		  	openMsg(json.result,json.msg);
+		  	RootElement.location.reload();
+		  },
+		  error:function(){
+		  	openMsg(-1,"服务器错误");
+		  }
+		});
+	}
+}
+
+function openMsg(flag,msg){
+	var layer = RootElement.JsCore.FrameLayer('Infomation');
+	layer.TipMode = true;
+	layer.TipFlag = flag;
+	layer.TipText = msg;
+	layer.open();
+	layer = null;
+}
+</script>
+<style type="text/css">
+.ztree li button.switch {visibility:hidden; width:1px;}
+.ztree li button.switch.roots_docu {visibility:visible; width:16px;}
+.ztree li button.switch.center_docu {visibility:visible; width:16px;}
+.ztree li button.switch.bottom_docu {visibility:visible; width:16px;}
+	</style>
+</head>
+<body>
+<#include "/common/admin/headinfo.htm">
+<div class="cm-fullpage">
+<div class="cm-center">
+<div class="cm-sitemap">
+	<div class="fl navinfo">
+		<span>您现在的位置：</span>
+		<span><a href="${MainSite}">我的管理首页</a></span>
+		<span>&nbsp;&gt;&nbsp;</span>
+		<span><a href="${SysSite}admin.html">系统管理平台</a></span>
+		<span>&nbsp;&gt;&nbsp;</span>
+		<span>会员账号管理</span>
+	</div>
+	<div class="fr search">
+		<form action="${RootPath}member/list.html" method="post">
+		<span>
+			<select name="ty" style="width:80px;">
+				<option value="">请选择</option>
+				<option value="0"
+				 <#if (ty?? && ty=='0')>
+				 	 selected = "selected"
+				 </#if>
+				>个人</option>
+				<option value="1"
+				<#if (ty?? && ty=='1')>
+				 	 selected = "selected"
+				 </#if>
+				>企业</option>
+			</select>
+		</span>
+		<span><input id="membername" type="text" name="membername" class="sinput" value="${membername?default('')}"/></span>
+		<span><input type="submit" name="searchbtn" class="sbtn" value="搜索" /></span>
+		</form>
+	</div>
+	<div class="clear"></div>
+</div>
+<div class="cm-center">
+<div class="cm-pagebody">
+	<div class="fl leftbody">
+		<div class="titlediv"><div class="tname">系统管理平台</div></div>
+		<div class="menusdiv">
+			<div class="menus padding">${MenuHtml}</div>
+		</div>
+	</div>
+	<div class="fr rightbody">
+		<div class="titlediv"><div class="tname">会员账号管理</div></div><div class="hsplit3"></div>
+		<table class="listtable" align="center" cellpadding="0" cellspacing="1" border="0" style="width:958px">
+		<tr class="header">
+			<td width="30" class="center">No</td>
+			<td class="center">会员账号</td>
+			<td width="180" class="center">会员昵称</td>
+			<td width="50" class="center">类型</td>
+			<td width="120" class="center">联系方式</td>
+			<td width="130" class="center">身份证号</td>
+			<td width="130" class="center">注册时间</td>
+			<!-- <td width="80" class="center">查看详细</td> -->
+			<td width="80" class="center">操作</td>
+		</tr>
+		<!-- loop begin -->
+		<#list memberList as member>
+			<tr class="trow">
+				<td class="center tno">${member_index + 1+ (pageinfo.pageNum-1)*pageinfo.pageSize}</td>
+				<td class="left tlink">${member.membername}</td>
+				<td class="center ttext">${member.nickname?if_exists}</td>
+				<td class="center ttext">
+				  <#if (member.type?? && member.type=='0')>
+				 	 个人
+				  </#if>
+				  <#if (member.type?? && member.type=='1')>
+				 	 企业
+				  </#if>
+				</td>
+				<td class="center ttext">${member.mobile?if_exists}</td>
+				<td class="center ttext">
+				  ${member.idcard?if_exists}
+				</td>
+				<td class="center ttext">
+				  ${(member.regtime?string("yyyy-MM-dd HH:mm:ss"))!''}
+				</td>
+				<!-- <td class="center tlink">
+				  <a title="点此查看会员详细信息" href="javascript:void(0);" onclick="MemCenter('${(member.memberid)!}');">查看详细</a>
+				</td> -->
+				<td class="center tlink">
+				  <a title="点此重置密码" href="javascript:void(0);" onclick="resetPwd('${(member.memberid)!}');">重置</a>&nbsp;
+				  <a title="点此删除会员" href="javascript:void(0);" onclick="del('${(member.memberid)!}');">删除</a>
+				</td>
+			</tr>
+		</#list>
+		<!-- loop end -->
+		</table>
+		${PageHtml}
+	</div>
+	<div class="clear"></div>
+</div>
+</div>
+</div>
+</div>
+<#include "/common/admin/bottom.htm">
+</body>
+</html>
+

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.smzj.mapper.SysModuleMapper" >
+  <resultMap id="BaseResultMap" type="com.smzj.model.SysModule" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="APPCODE" property="appcode" jdbcType="VARCHAR" />
+    <id column="MODCODE" property="modcode" jdbcType="VARCHAR" />
+    <result column="PARENTCODE" property="parentcode" jdbcType="VARCHAR" />
+    <result column="MODNAME" property="modname" jdbcType="VARCHAR" />
+    <result column="MODID" property="modid" jdbcType="VARCHAR" />
+    <result column="MODICO" property="modico" jdbcType="VARCHAR" />
+    <result column="MODPATH" property="modpath" jdbcType="VARCHAR" />
+    <result column="ISMENU" property="ismenu" jdbcType="DECIMAL" />
+    <result column="ISSHOW" property="isshow" jdbcType="DECIMAL" />
+    <result column="SORTCODE" property="sortcode" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  <select id="selectSysModule" resultMap="BaseResultMap">
+    SELECT * FROM SYS_MODULE
+    <where>
+	    <if test="appcode != null and appcode != ''">
+	          APPCODE = #{appcode}  
+	    </if>
+	    <if test="parentcode != null and parentcode != ''">
+	           and PARENTCODE = #{parentcode}  
+	    </if>
+	    <if test="parentcode == null or parentcode == ''">
+	           and PARENTCODE IS NULL  
+	    </if>
+    </where>
+    AND ISMENU = 1 AND ISSHOW = 1 ORDER BY SORTCODE ASC
+  </select>
+  
+  <select id="selectModuleByUser" resultMap="BaseResultMap">
+  select * from SYS_MODULE where modcode in (select modcode from SYS_ROLE_PERMIT where rolecode in (select rolecode from SYS_USER_ROLE where userid=#{userId})) and ismenu=1 and isshow=1 and appcode='Info' order by sortcode desc
+  </select>
+</mapper>

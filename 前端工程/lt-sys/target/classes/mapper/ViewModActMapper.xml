@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.smzj.mapper.ViewModActMapper" >
+  <resultMap id="BaseResultMap" type="com.smzj.model.ViewModAct" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <result column="APPCODE" property="appcode" jdbcType="VARCHAR" />
+    <result column="MODCODE" property="modcode" jdbcType="VARCHAR" />
+    <result column="PARENTCODE" property="parentcode" jdbcType="VARCHAR" />
+    <result column="MODNAME" property="modname" jdbcType="VARCHAR" />
+    <result column="MODID" property="modid" jdbcType="VARCHAR" />
+    <result column="ISSHOW" property="isshow" jdbcType="DECIMAL" />
+    <result column="ISMENU" property="ismenu" jdbcType="DECIMAL" />
+    <result column="SORTCODE" property="sortcode" jdbcType="DECIMAL" />
+    <result column="ACTNAME" property="actname" jdbcType="VARCHAR" />
+    <result column="ACTNAME1" property="actname1" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="selectByappcode" resultMap="BaseResultMap">
+  	select t.appcode,t.modcode,t.parentcode,t.modname,t.modid,t.isshow,t.ismenu,t.sortcode,replace(max(actname),',',' ') as actname,replace(max(actname1),',',' ') as actname1 from
+	(
+	select m.appcode,m.modcode,m.parentcode,m.modname,m.modid,m.isshow,m.ismenu,m.sortcode,to_char(wm_concat(to_char(aa.actcode1||aa.actname))
+	over (partition by m.appcode,m.modcode,m.modname,m.modid,m.isshow,m.ismenu,m.sortcode order by aa.sortcode)) as actname,
+	to_char(wm_concat(to_char(aa.actname))
+	over (partition by m.appcode,m.modcode,m.modname,m.modid,m.isshow,m.ismenu,m.sortcode order by aa.sortcode)) as actname1
+	from sys_module m
+	left join sys_permit p on m.modcode=p.modcode and p.appcode=m.appcode
+	left join
+	(
+	select a.actcode||'-' as actcode1,a.actcode,a.actname,a.sortcode from sys_action a
+	)aa
+	on aa.actcode=p.actcode
+	)t
+	where t.appcode='${appcode}'
+	group by t.appcode,t.modcode,t.parentcode,t.modname,t.modid,t.isshow,t.ismenu,t.sortcode
+	order by t.modcode, t.sortcode asc
+  </select>
+</mapper>

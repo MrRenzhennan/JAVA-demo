@@ -1,0 +1,47 @@
+<div class="cm-header">
+	<div class="cm-center">
+	<div class="fl logos">
+		<div class="logo" onclick="javascript:location.href='${MainSite!}'"></div>
+	</div>
+	<div class="fl lines"><div class="line"></div></div>
+	<div class="fl piclogo"><img src="${RootPath!}static/img/common/memberlogo.jpg" border="0"/></div>
+		<div class="fr menuinfo">
+			<div class="topmenus">
+			<#if sysMember??>
+				<#if (sysMember.memberid)??>
+					<span class='menu'><a href='${MemberSite}'>我的用户中心</a></span>
+					<span class='mline'>|</span>
+				</#if>
+			</#if>
+			<span class='menu'><a href='${MainSite!}' target='_blank'>返回网站首页</a></span>
+			</div>
+			<#if sysMember??>
+				<div class='topinfos'>
+					<span class='menu'>欢迎您，
+					<#if (sysUser.truename)??>
+						${(sysMember.truename)!}(${(sysMember.membername)!})
+					<#else>
+						${(sysMember.membername)!}
+					</#if>
+					</span>
+					<span class='mline'>|</span>
+					<span class='menu'><a href='${MemberSite!}safe/edit.html'>修改密码</a></span>
+					<span class='mline'>|</span>
+					<span class='menu'><a href='${MemberSite!}member/logout.html'>退出登录</a></span>
+				</div>
+			<#else>
+				<div class='topinfos'>
+					<span class='menu'><a href='${MemberSite}safe/edit.html'>登录</a></span>
+					<span class='mline'>|</span>
+					<span class='menu'><a href='${MemberSite}web/reg/reg.html'>注册新账号</a></span>
+					<span class='mline'>|</span>
+					<span class='menu'><a href='${MemberSite}web/pwd/findtype.html'>找回密码</a></span>
+				</div>
+			</#if>
+		</div>
+	<div class='clear'></div>
+	</div>
+</div>
+<div class='cm-lines'>&nbsp;</div>
+<div class='cm-fullpage'>
+<div class='cm-center'>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.smzj.mapper.SysUserOrgMapper" >
+  <resultMap id="BaseResultMap" type="com.smzj.model.SysUserOrg" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <result column="USERID" property="userId" jdbcType="BIGINT" />
+    <result column="ORGCODE" property="orgCode" jdbcType="VARCHAR" />
+    <result column="ORGTYPE" property="orgType" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="findByOrgCode" resultMap="BaseResultMap">
+    select * from SYS_USER_ORG where ORGCODE = #{orgCode}
+  </select>
+  <select id="findByOrgTypeAndOrgCodeAndUserId" resultMap="BaseResultMap">
+    select * from SYS_USER_ORG where ORGCODE = #{orgCode} and ORGTYPE = #{orgType} and USERID = #{userId}
+  </select>
+  <delete id="deleteByOrgTypeAndUserId">
+  	delete from SYS_USER_ORG where USERID = #{userId} and ORGTYPE = #{orgType}
+  </delete>
+  	<!--根据userid获得SYS_USER_ORG对象-->
+	<select id="findOrgByUserId2" parameterType="String" resultType="com.smzj.model.SysUserOrg">
+		select * from SYS_USER_ORG where userid = #{userid}
+	</select>
+</mapper>

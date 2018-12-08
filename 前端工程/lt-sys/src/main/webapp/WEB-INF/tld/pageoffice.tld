@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
+	http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+	version="2.0"
+>
+	<description>
+		The PageOffice Tag Library offers a very convenient way to create JSP page with PageOffice.
+	</description>
+	<display-name>PageOffice Tag Library</display-name>
+	<tlib-version>2.0</tlib-version>
+	<short-name>po</short-name>
+	<uri>http://java.pageoffice.cn</uri>
+	<tag>
+		<description>
+			Creates a PageOfficeCtrl instance with the given parameters.
+		</description>
+		<display-name>PageOfficeCtrl</display-name>
+		<name>PageOfficeCtrl</name>
+		<tag-class>com.zhuozhengsoft.pageoffice.tags.EditorTag</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<description>
+				The unique instance id under which the PageOfficeCtrl can be
+				retrieved through the JavaScript.
+			</description>
+			<name>id</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+				Width of the PageOfficeCtrl instance in the browser window.
+			</description>
+			<name>width</name>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+				Height of the PageOfficeCtrl instance in the browser window.
+			</description>
+			<name>height</name>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<example><![CDATA[
+<po:PageOfficeCtrl id="PageOfficeCtrl1" height="600px" />]]>
+		</example>
+	</tag>
+	<tag>
+		<description>
+			Creates a PageOffice PDFCtrl instance with the given parameters.
+		</description>
+		<display-name>PDFCtrl</display-name>
+		<name>PDFCtrl</name>
+		<tag-class>com.zhuozhengsoft.pageoffice.tags.PDFTag</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<description>
+				The unique instance id under which the PDFCtrl can be
+				retrieved through the JavaScript.
+			</description>
+			<name>id</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+				Width of the PDFCtrl instance in the browser window.
+			</description>
+			<name>width</name>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+				Height of the PDFCtrl instance in the browser window.
+			</description>
+			<name>height</name>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<example><![CDATA[
+<po:PDFCtrl id="PDFCtrl1" height="600px" />]]>
+		</example>
+	</tag>
+	<tag>
+		<description>
+			Creates a PageOffice FileMakerCtrl instance with the given parameters.
+		</description>
+		<display-name>FileMakerCtrl</display-name>
+		<name>FileMakerCtrl</name>
+		<tag-class>com.zhuozhengsoft.pageoffice.tags.FileMakerTag</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<description>
+				The unique instance id under which the FileMakerCtrl can be
+				retrieved through the JavaScript.
+			</description>
+			<name>id</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+				Width of the FileMakerCtrl instance in the browser window.
+			</description>
+			<name>width</name>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+				Height of the FileMakerCtrl instance in the browser window.
+			</description>
+			<name>height</name>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<example><![CDATA[
+<po:FileMakerCtrl id="FileMakerCtrl1" />]]>
+		</example>
+	</tag>
+	<tag>
+		<description>
+			Creates a HtmlSignCtrl instance with the given parameters.
+		</description>
+		<display-name>HtmlSignCtrl</display-name>
+		<name>HtmlSignCtrl</name>
+		<tag-class>com.zhuozhengsoft.pageoffice.tags.HtmlSignTag</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<description>
+				The unique instance id under which the HtmlSignCtrl can be
+				retrieved through the JavaScript.
+			</description>
+			<name>id</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+				Width of the HtmlSignCtrl instance in the browser window.
+			</description>
+			<name>width</name>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<description>
+				Height of the HtmlSignCtrl instance in the browser window.
+			</description>
+			<name>height</name>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<example><![CDATA[
+<po:HtmlSignCtrl id="HtmlSignCtrl1" />]]>
+		</example>
+	</tag>
+	<tag>
+		<description>
+			Creates a PageOffice MobFileLink instance with the given parameters.
+		</description>
+		<display-name>MobFileLink</display-name>
+		<name>MobFileLink</name>
+		<tag-class>com.zhuozhengsoft.pageoffice.tags.MobFileLinkTag</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<description>
+				Width of the MobFileLink instance in the browser window.
+			</description>
+			<name>open</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<example><![CDATA[
+<po:MobFileLink open="doc/test.doc">test.doc</po:MobFileLink>]]>
+		</example>
+	</tag>
+</taglib>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.smzj.mapper.SysAppMapper" >
+  <resultMap id="BaseResultMap" type="com.smzj.model.SysApp" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="APPCODE" property="appcode" jdbcType="VARCHAR" />
+    <result column="APPNAME" property="appname" jdbcType="VARCHAR" />
+    <result column="SORTCODE" property="sortcode" jdbcType="DECIMAL" />
+  </resultMap>
+  
+  <select id="selectSysOrgByMap" parameterType="Map" resultType="hashMap">
+  	SELECT * FROM SYS_ORG
+  	<where>
+  		<if test="orgname != null and orgname != ''">
+  			AND ORGNAME = #{orgname, jdbcType=VARCHAR}
+  		</if>
+  		<if test="orgtype != null and orgtype != ''">
+  			
+  		</if>
+  	</where>
+  </select>
+</mapper>

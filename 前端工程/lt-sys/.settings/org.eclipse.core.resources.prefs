@@ -1,0 +1,12 @@
+eclipse.preferences.version=1
+encoding//src/main/java=UTF-8
+encoding//src/main/resources=UTF-8
+encoding//src/main/resources/config.properties=UTF-8
+encoding//src/main/resources/log4j.properties=UTF-8
+encoding//src/main/webapp/WEB-INF/freemarker/a.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/freemarker/common/admin=UTF-8
+encoding//src/main/webapp/WEB-INF/freemarker/common/admin/headinfo.htm=UTF-8
+encoding//src/main/webapp/WEB-INF/freemarker/common/web/bottom.htm=UTF-8
+encoding//src/main/webapp/WEB-INF/freemarker/member/memberLogin.htm=UTF-8
+encoding/<project>=UTF-8
+encoding/sonar-project.properties=UTF-8

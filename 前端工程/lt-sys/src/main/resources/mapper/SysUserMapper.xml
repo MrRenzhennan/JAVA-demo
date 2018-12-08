@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smzj.mapper.SysUserMapper">
+  <resultMap id="BaseResultMap" type="com.smzj.model.SysUser">
+    <id column="USERID" property="userid" />
+    <result column="USERNAME"  property="username" />
+    <result column="USERPASSWORD"  property="userpassword" />
+    <result column="ORGTYPE"  property="orgtype" />
+    <result column="TRUENAME" property="truename" />
+    <result column="ADDRESS" property="address" />
+    <result column="ZIP" property="zip" />
+    <result column="TEL" property="tel" />
+    <result column="FAX" property="fax" />
+    <result column="MOBILE" property="mobile" />
+    <result column="QQ" property="qq" />
+    <result column="EMAIL" property="email" />
+    <result column="ISDEL" property="isDel" />
+    <result column="ISDROP" property="isDrop" />
+    <result column="LEADER" property="leader" />
+     <result column="PUBKEY" property="pubkey" />
+  </resultMap>
+
+  <resultMap id="BaseResultMapOrgName" type="com.smzj.model.SysUser" extends="BaseResultMap">
+  	<result column="ORGNAME" property="orgname" jdbcType="VARCHAR"/>
+  </resultMap>
+
+  <select id="checkUserPermit" resultType="Boolean">
+			SELECT nvl(count(1),0) as count
+			  FROM sys_user su
+			  JOIN sys_user_role sur
+			    ON su.userid = sur.userid
+			  JOIN sys_role_permit srp
+			    ON sur.rolecode = srp.rolecode
+			 WHERE srp.permitcode like #{userPermit}||'%'
+			   AND su.userid = #{loginUserId}
+			   AND su.orgtype = srp.orgtype
+  			   AND su.orgtype = #{orgtype}
+  	</select>
+  	<select id="selectUserByOrgCode" resultMap="BaseResultMap" >
+    	select * from sys_user where userid in (select userid from sys_user_org where orgcode in (select suo.orgcode from sys_user_org suo, sys_org so
+    	<where>
+    	 so.orgcode = suo.orgcode
+    	<if test="orgtype != null and orgtype != ''">
+    	   and so.orgtype = #{orgtype}
+    	</if>
+    	<if test="orgcode != null and orgcode != ''">
+    	   and suo.orgcode = #{orgcode}
+    	</if>
+    	</where>
+    	 and so.isdel = 0
+          )) and isdrop = 0
+  	</select>
+  	<select id="findSysUserByID" resultMap="BaseResultMap" >
+    	select * from SYS_USER where USERID = #{userid}
+  	</select>
+  	<select id="findSysUserByName" resultMap="BaseResultMap" >
+    	select * from SYS_USER where username = #{username}
+  	</select>
+  	<select id="findNormalUserByID" resultMap="BaseResultMap" >
+  		<![CDATA[
+    	select * from SYS_USER where USERID = #{userid} and ISDEL = 0 and ISDROP <> 1
+    	]]>
+  	</select>
+
+  	<update id="updateUserIsDel" parameterType="SysUser">
+		update SYS_USER set ISDEL = #{isDel} where USERID = #{userid}
+  	</update>
+
+  	<update id="delUser" parameterType="SysUser">
+		update SYS_USER set ISDROP = #{isDrop}, USERNAME=#{username} where USERID = #{userid}
+  	</update>
+	<sql id="sysUser_column">
+      USERID,USERNAME,USERPASSWORD,ORGTYPE,TRUENAME,ADDRESS,ZIP,TEL,FAX,MOBILE,QQ,EMAIL,ISDEL,ISDROP,PUBKEY
+   </sql>
+   <sql id="sysUser_properties">
+   	   #{userid, jdbcType=VARCHAR},
+	   #{username, jdbcType=VARCHAR},
+	   #{userpassword,jdbcType=VARCHAR },
+	   #{orgtype, jdbcType=INTEGER},
+	   #{truename},
+	   #{address},
+	   #{zip},
+	   #{tel},
+	   #{fax},
+	   #{mobile},
+	   #{qq},
+	   #{email},
+	   #{isDel, jdbcType=INTEGER},
+	   #{isDrop, jdbcType=INTEGER},
+	   #{pubkey}
+   </sql>
+	 <insert id="insertSysUser" parameterType="com.smzj.model.SysUser">
+        <selectKey keyProperty="userid" resultType="String" order="BEFORE">
+	       <![CDATA[ select sys_guid() from dual]]>
+	    </selectKey>
+	    insert into SYS_USER (<include refid="sysUser_column"/>)values (<include refid="sysUser_properties" />)
+	</insert>
+	<select id="verifyDuplicateUserName" parameterType="String" resultType="Integer">
+		SELECT COUNT(*) FROM SYS_USER WHERE  USERNAME = #{username}
+	</select>
+	  	<!-- 重置密码 -->
+  	<update id="resetPassword" parameterType="SysUser">
+			update SYS_USER set USERPASSWORD = #{userpassword} where USERID=#{userid}
+  	</update>
+
+	<select id="selectUser4Page" resultMap="BaseResultMap" >
+    	select * from sys_user where
+    	orgtype = #{orgtype}
+    	<if test="orgcode != null and orgcode != ''">
+    	 and userid in (select userid
+          from sys_org so
+          join sys_user_org suo
+            on suo.orgcode = so.orgcode
+         where so.parentcode = #{orgcode}
+            or so.orgcode = #{orgcode})
+    	</if>
+    	and isdrop = 0
+    	<if test="truename != null and truename != ''">
+    	   and (TRUENAME like '%'||#{truename}||'%' or USERNAME like '%'||#{truename}||'%' )
+    	</if>
+  	</select>
+
+  	<select id="selectUser5Page" resultMap="BaseResultMapOrgName" >
+	  	SELECT U.ORGNAME,U.ORGCODE, SU.*
+		  FROM (SELECT *
+		          FROM SYS_ORG
+		          <where>
+		            ISDEL = 0
+		          	<if test="orgtype != null and orgtype != ''">
+		    	  		AND ORGTYPE = #{orgtype,jdbcType=VARCHAR}
+			    	</if>
+			    	<if test="area != null and area != ''">
+					 	<if test="area == 'istel'">
+					 		and istel = 1
+					 	</if>
+					 	<if test="area == 'isemail'">
+					 		and isemail = 1
+					 	</if>
+					 	<if test="area == 'islink'">
+					 		and islink = 1
+					 	</if>
+					 	<if test="area == 'ismsg'">
+					 		and ismsg = 1
+					 	</if>
+				      </if>
+		          </where>
+		         START WITH ORGCODE = #{orgcode,jdbcType=VARCHAR}
+		        CONNECT BY PARENTCODE = PRIOR ORGCODE) U
+		  LEFT JOIN SYS_USER_ORG SUO
+		    ON SUO.ORGCODE = U.ORGCODE
+		  LEFT JOIN SYS_USER SU
+		    ON SU.USERID = SUO.USERID
+		 WHERE SU.USERID IS NOT NULL AND SU.ISDROP = 0
+		 <if test="truename != null and truename != ''">
+	        and (SU.TRUENAME LIKE '%'||#{truename}||'%' OR SU.USERNAME LIKE '%'||#{truename}||'%')
+	     </if>
+  	</select>
+
+  	<select id="findUserByNameAndPwd" parameterType="SysUser" resultMap="BaseResultMap">
+    <![CDATA[
+    select * from SYS_USER where USERNAME = #{username} and USERPASSWORD=#{userpassword} and ISDEL = 0 and ISDROP <> 1
+    ]]>
+    </select>
+
+    <select id="ifModifiedTime" resultType="Boolean">
+		SELECT count(1)
+		  FROM SYS_USER_ROLE SUR
+		  JOIN SYS_ROLE_PERMIT SRP
+		    ON SUR.ROLECODE = SRP.ROLECODE
+		 WHERE SRP.APPCODE = 'Info'
+		   AND SRP.ACTCODE = 'Time'
+		   AND SUR.USERID = #{userid}
+  	</select>
+    <select id="selectIsChatUser" resultType="int">
+    	select count(-1)
+		from sys_user u
+		join os_online_user ou on u.userid=ou.userid
+		where ou.userid=#{userid}
+    </select>
+      	<select id="getUserByUserIdAndPreUserId" resultMap="BaseResultMap" >
+  		<![CDATA[
+    	select * from SYS_USER where USERID = #{userid} and ISDEL = 0 and PRE_USER_ID =#{preUserId}
+    	]]>
+  	</select>
+  	<select id="findUserPK" resultType="int">
+    	select count(1)
+		from sys_user u
+		where u.USERID=#{userid} and u.PUBKEY=#{pubkey}
+    </select>
+</mapper>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smzj.mapper.SysMemberFeedbackMapper">
+  <resultMap id="BaseResultMap" type="com.smzj.model.SysMemberFeedback">
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="FEEDBACKID" jdbcType="VARCHAR" property="feedbackid" />
+    <result column="MEMBERID" jdbcType="VARCHAR" property="memberid" />
+    <result column="OPINION" jdbcType="VARCHAR" property="opinion" />
+    <result column="TEL" jdbcType="VARCHAR" property="tel" />
+    <result column="ADDTIME" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="IMGURL" jdbcType="VARCHAR" property="imgurl" />
+    <result column="ADDTIME" jdbcType="TIMESTAMP" property="addtime" />
+    <result column="TYPE" jdbcType="DECIMAL" property="type" />
+    <result column="UNIT" jdbcType="DECIMAL" property="unit" />
+  </resultMap>
+
+  <insert id="insertModel" parameterType="com.smzj.model.SysMemberFeedback" useGeneratedKeys="true" keyProperty="feedbackid">
+  	<selectKey keyProperty="feedbackid" resultType="String" order="BEFORE">
+		select sys_guid() from dual
+	</selectKey>
+  	insert into sys_member_feedback
+  	(
+  		feedbackid,
+  		memberid,
+  		opinion,
+  		tel,
+  		addtime,
+  		imgurl,
+	  	type,
+	  	unit
+  	)
+  	values
+  	(
+  		#{feedbackid},
+  		#{memberid,jdbcType=VARCHAR},
+  		#{opinion,jdbcType=VARCHAR},
+  		#{tel,jdbcType=VARCHAR},
+  		sysdate,
+  		#{imgurl,jdbcType=VARCHAR},
+  		#{type,jdbcType=VARCHAR},
+  		#{unit,jdbcType=VARCHAR}
+  	)
+  </insert>
+</mapper>

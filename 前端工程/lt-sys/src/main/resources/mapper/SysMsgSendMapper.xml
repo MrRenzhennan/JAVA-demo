@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.smzj.mapper.SysMsgSendMapper">
+
+	<select id="getMsgByMap" parameterType="java.util.Map"
+		resultType="java.util.HashMap">
+		SELECT
+		rownum,
+		A.msgid,
+		A.MSGCONTENT,
+		A.MOBILE,
+		A.msgflag,
+		A.ISSEND,
+		b.ID,
+		b.LINKURL
+		FROM
+		(
+		SELECT
+		msgid,
+		msgflag,
+		MSGCONTENT,
+		MOBILE,
+		issend
+		FROM
+		SYS_MSG_SEND
+		WHERE
+		mobile is not null
+        and msgflag is not null
+		<if test="memberid!=null and member!=''">
+		AND MEMBERID = #{memberid}
+		</if>
+		<if test="userid!=null and userid!=''">
+		AND USERID = #{userid}
+		</if>
+		<if test="msgway!=null and msgway!=''">
+		AND MSGWAY = #{msgway}
+		</if>
+		<if test="issend!=null and issend!=''">
+		AND ISSEND = #{issend}
+		</if>
+		<if test="msgway==null or msgway==''">
+		AND MSGWAY = 1
+		</if>
+		) A,
+		(
+		SELECT
+		ID,
+		MSGFLAG,
+		LINKURL
+		FROM
+		SYS_MSG_SET
+		WHERE
+		MSGWAY = 1
+		) B
+		WHERE
+		A .MSGFLAG = b.MSGFLAG (+)
+	</select>
+	<update id="updateMsgStatus" parameterType="java.util.Map">
+	update SYS_MSG_SEND set ISSEND=1 where
+	 msgid=#{msgid}
+	</update>
+</mapper>

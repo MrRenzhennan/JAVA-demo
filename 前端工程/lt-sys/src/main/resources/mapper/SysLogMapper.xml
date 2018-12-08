@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.smzj.mapper.SysLogMapper" >
+  <resultMap id="BaseResultMap" type="com.smzj.model.SysLog" >
+    <!--
+      WARNING - @mbggenerated
+    -->
+    <id column="LOGID" property="logid" jdbcType="VARCHAR" />
+    <result column="LOGTYPE" property="logtype" jdbcType="DECIMAL" />
+    <result column="USERID" property="userid" jdbcType="VARCHAR" />
+    <result column="USERNAME" property="username" jdbcType="VARCHAR" />
+    <result column="USERIP" property="userip" jdbcType="VARCHAR" />
+    <result column="LOGMEMO" property="logmemo" jdbcType="VARCHAR" />
+    <result column="ADDTIME" property="addtime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <select id="selectSysLogList" resultMap="BaseResultMap" parameterType="map">
+  		select logid,logtype,userid,username,userip,logmemo||'('||username||')' as logmemo,addtime from SYS_LOG
+  		<where>
+  			<if test="logtype!= null and logtype!= '' ">
+				and logtype = #{logtype}
+			</if>
+			<if test="sdate!= null and edate==null ">
+				and addtime >= to_date(#{sdate}||' 0:0:0','yyyy-mm-dd HH24:mi:ss')
+			</if>
+			<if test="edate!=null and sdate==null">
+				<![CDATA[and addtime <= to_date(#{edate}||' 23:59:59','yyyy-mm-dd HH24:mi:ss')]]>
+			</if>
+			<if test="sdate!= null  and edate!=null ">
+				and addtime between
+				to_date(#{sdate}||' 0:0:0','yyyy-mm-dd HH24:mi:ss')
+				and
+				to_date(#{edate}||' 23:59:59','yyyy-mm-dd HH24:mi:ss')
+			</if>
+			<if test="logmemo!= null  ">
+				and logmemo like  '%'||#{logmemo}||'%'
+			</if>
+  		</where>
+  		order by addtime desc
+  </select>
+  
+  <insert id="save" parameterType="com.smzj.model.SysLog">
+	    <selectKey keyProperty="logid" resultType="String" order="BEFORE">
+	       <![CDATA[ select sys_guid() from dual]]>
+	    </selectKey>
+	    insert into SYS_LOG (logid,logtype,userip,logmemo)values (#{logid},#{logtype},#{userip},#{logmemo})
+	</insert>
+  <select id="selectSysLogListByLessThanAddTime" resultMap="BaseResultMap" parameterType="String">
+  		select * from sys_log l where to_char(l.addtime,'yyyy-mm-dd')&lt;#{endMonth} order by l.addtime asc
+  </select>
+  <delete id="deleteSysLogsByLessThanAddTime" parameterType="String">
+  		delete from sys_log l where to_char(l.addtime,'yyyy-mm-dd')&lt;#{endMonth}
+  </delete>
+</mapper>

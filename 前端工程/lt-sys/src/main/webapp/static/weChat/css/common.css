@@ -1,0 +1,48 @@
+/*公共样式*/
+* { margin: 0; padding: 0; }
+body, div, td { margin: 0px; padding: 0px; border: 0px; font-family: "微软雅黑", Arial; }
+input, select, textarea { margin: 0px; padding: 0px; font-family: 微软雅黑,Microsoft yahei,Arial,Verdana,Tahoma,sans-serif; }
+form, img, select{ margin: 0px; padding: 0px; border: 0px;border:none; }
+ul, li { margin: 0px; padding: 0px; border: 0px; list-style-type: none; list-style-position: inside; }
+a { text-decoration: none; cursor: pointer; outline: none; background: none; display: block; color: #666; }
+a:link, a:visited, a:hover, a:active { background: none; outline: none; /*鼠标点击边框颜色*/ display: block; }
+body { font-family: "微软雅黑", Arial; text-align: center; padding: 0px; margin: 0px; background: #FFF; }
+.f12 { font-size: 12px; }
+.f14 { font-size: 14px; }
+.f16 { font-size: 16px; }
+.f18 { font-size: 18px; }
+.f20 { font-size: 20px; }
+.f21 { font-size: 21px; }
+.f24 { font-size: 24px; }
+.f30 { font-size: 30px; }
+.f36 { font-size: 36px; }
+.f40 { font-size: 40px; }
+.xx { color: #3192ff; }
+.fl { float: left; }
+.fr { float: right; }
+.cl { clear: both; }
+.clear { clear: both; line-height: 0px; height: 0px; }
+
+/*公共头*/
+.cm-header { height: 50px; }
+.cm-header .header { position: fixed; top: 0; left: 0; right: 0; background: #0088ff; overflow: hidden; z-index: 10; }
+.cm-header .top-conter { width: 95%; height: 50px; margin: 0 auto; overflow: hidden; }
+.cm-header .top-conter .back { margin-top: 13px; }
+.cm-header .top-conter .title { font-size: 24px; line-height: 50px; color: #fff; }
+
+
+
+/*公共尾*/
+.cm-footer { height: 50px; }
+.cm-footer .cm-center { position: fixed; bottom: 0; left: 0; right: 0; }
+.cm-footer .cm-center .conter { height: 50px; width: 100%; background: #fff; border-top: 1px solid #f7f7f7; }
+
+.cm-footer .cm-center .conter .footer-icon { margin-top: 5px; }
+.cm-footer .cm-center .conter .footer-icon .icon1 img { height: 20px; }
+.cm-footer .cm-center .conter .footer-icon .title a { font-size: 14px; color: #6b6b6b; outline: none; }
+
+.cm-footer .cm-center .conter .footer-icon .on a { font-size: 14px; color: #0088ff; }
+
+.cm-footer .cm-center .conter .sec3 { margin-top: -10px; text-align: center; }
+.cm-footer .cm-center .conter .sec3 .tit3 { padding-top: 38px; color: #0088ff;cursor:pointer; }
+.cm-footer .cm-center .conter .icon-wid { width: 18%; text-align: center; }

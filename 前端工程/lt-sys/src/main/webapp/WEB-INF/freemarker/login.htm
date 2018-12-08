@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<#include "/common/web/head.htm">
+	<#include "/common/web/headfile.htm">
+<script language="javascript" type="text/javascript">
+$(document).ready(function(){
+  document.getElementById("username").focus();
+});
+$(function(){
+    $('#username').bind('keypress',function(event){
+        if(event.keyCode == "13"){
+           $('#userpassword').focus();
+        }
+    });
+    $('#userpassword').bind('keypress',function(event){
+        if(event.keyCode == "13"){
+           $('#checkCode').focus();
+        }
+    });
+    $('#checkCode').bind('keypress',function(event){
+        if(event.keyCode == "13"){
+           subForm();
+        }
+    });
+});
+
+function subForm(){
+	var isOk=JsCore.Valitor.ChkForm('subForm',1);
+	if(isOk){
+		$.ajax({
+			url : '${RootPath}userLogin/checkLogin.html',
+			type : "post",
+			data : $("#subForm").serialize(),
+			dataType: 'json',
+			async: false,
+			success : function(d) {
+					if(d.code=="-1"){
+						var _config = {
+								tipflag : d.code,
+								tiptitle :d.title,
+								tiptext : d.msg,
+								url : d.url
+						}
+					  RootElement.openMessageToUrl(_config);
+					}else if(d.code=="-100"){
+						var layer = RootElement.JsCore.FrameLayer('Infomation');
+						layer.TipMode = true;
+						layer.TipFlag ="-1";
+						layer.TipTitle = d.title;
+						layer.TipText = d.msg;
+						layer.CloseFun = function (){
+							RootElement.document.getElementById('checkCode').value=''
+						}
+						layer.open();
+						layer = null;
+					}else if(d.code=="1"){
+						RootElement.location.href='/admin.html';
+					}
+			},
+			error: function(d) {
+				RootElement.errorMessage(d);
+			}
+		});
+	  }
+}
+
+
+	function myReload(){
+         $("#createCheckCode").attr('src',"/userLogin/code.html?time='"+new Date()+"'");
+	}
+	
+	
+	$(document).ready(function(){
+		myReload();
+	})
+
+
+	function checkForm(){
+	     $("#subForm").submit()
+	}
+</script>
+<style>body {background:#f3f3f3;}
+</style>
+<body>
+<div class="cm-header" style="background:#fff;">
+	<div class="cm-center" style="padding-top:10px;">
+		<div class="fl logos">
+			<div class="logo" onclick="javascript:location.href='${MainSite}';"></div>
+		</div>
+		<div class="fl lines"><div class="line"></div></div>
+		<div class="fl piclogo"><img src="${RootPath}static/img/syslogo.jpg" border="0" /></div>
+		<div class="clear"></div>
+	</div>
+</div>
+<div class="userlogin">
+	<div class="banner">
+		<div class="fl banner-img">
+			<div class="logo-img"></div>
+		</div>
+		<div class="fr form">
+			<div class="form-top"></div>
+			<form id="subForm" action="/userLogin/checkLogin.html" method="post" target="HiddenFrame">
+			<div class="form-main">
+				<div class="form-wid">
+					<div style="height:60px;"></div>
+					<div class="form-bor">
+						<div class="row row-bor">
+							<div class="fl" style="width: 20px;height:10px;"></div>
+							<div class="fl" style="color：#000;">帐&nbsp;&nbsp;&nbsp;号：</div>
+							<div class="fl"><input name="username" id="username" type="text" placeholder="请输入帐号" required="true"  datatitle="帐号" class="input" maxlength="32"/></div>
+							<div class="clear"></div>
+						</div>
+						<div class="row row-bor">
+							<div class="fl" style="width: 20px;height:10px;"></div>
+							<div class="fl" style="color：#000;">密&nbsp;&nbsp;&nbsp;码：</div>
+							<div class="fl"><input name="userpassword" id="userpassword" type="password" placeholder="请输入密码" required="true"  datatitle="密码" class="input" maxlength="32"/></div>
+							<div class="clear"></div>
+						</div>
+						<div class="row">
+							<div class="fl" style="width: 20px;height:10px;"></div>
+							<div class="fl" style="color：#000;">验证码：</div>
+							<div class="fl"><input type="text" id="checkCode" name="code" class="input2" required="true"  datatitle="验证码" placeholder="请输入验证码" maxlength="4"/></div>
+							<div class="fl yzm"><a href="javascript:myReload();"><img id="createCheckCode" src=""/></a></div>
+							<div class="clear"></div>
+						</div>
+					</div>
+					<div class="but">
+					<a href="javascript:subForm();"><div class="button">登&nbsp;&nbsp;&nbsp;录</div></a>
+					<div class="clear"></div>
+				</div>
+				</div>
+				<div id="error" style="color:#f00;margin-top:20px;text-align:center"></div>
+			</div>
+			</form>
+			<div class="form-bottom"></div>
+		</div>
+		<div class="clear"></div>
+	</div>
+</div>
+    <#include "/common/web/bottom.htm">
+    </div>
+</body>
+</html>
